@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -14,29 +15,60 @@
 
 void	ft_malloc_struct_data(t_data *data)
 {
-	data->philos = malloc(sizeof(t_philo) * data->n_philos);
-	data->thread = malloc(sizeof(pthread_t) * data->n_philos);
-}
-
-void	ft_parse(t_data *data, int argc, char **argv)
-{
 	data->n_philos = ft_atoi_philo(argv[1]);
-	data->philos->time_to_die = ft_atoi_philo(argv[2]);
-	data->philos->time_to_eat = ft_atoi_philo(argv[3]);
-	data->philos->time_to_sleep = ft_atoi_philo(argv[4]);
-	if (argc == 6)
-		data->philos->n_times_to_eat = ft_atoi_philo(argv[5]);
+	data->philos = malloc(sizeof(t_philo) * data->n_philos);
+	if (!data->philos)
+		ft_print_error("error malloc");
+	data->thread = malloc(sizeof(pthread_t) * data->n_philos);
+	if (!data->thread)
+		ft_print_error("error malloc");
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->n_philos);
+	if (!data->forks)
+		ft_print_error("error malloc");
+	data->lock = malloc(sizeof(pthread_mutex_t) * data->n_philos);
+	if (!data->lock)
+		ft_print_error("error malloc");
 }
 
-// #### data->n_philos (inicializarlo con alguna instancia o con malloc, SEGV) ####
+void	ft_init_mutex(t_data *data, int i)
+{
+
+}
+
+void	ft_init_philo(int argc, char **argv, t_data *data, i)
+{
+		data->philos[i]->time_to_die = ft_atoi_philo(argv[2]);
+		data->philos[i]->time_to_eat = ft_atoi_philo(argv[3]);
+		data->philos[i]->time_to_sleep = ft_atoi_philo(argv[4]);
+		if (argc == 6)
+			data->philos[i]->n_times_to_eat = ft_atoi_philo(argv[5]);
+		data->
+
+}
+
+void	ft_init_elements(int argc, char **argv, t_data *data)
+{
+	int i;
+
+	i = 0;
+	while (i > data->n_philos)
+	{
+		ft_init_mutex(data, i);
+		ft_init_philo(argc, argv, data, i);
+		i++;
+	}
+}
+
 int main(int argc, char **argv)
 {
 	// t_philo	philos;
 	t_data	data;
 	if (argc < 5 || argc > 6)
 		ft_print_error("Numbers of arguments invaled");
-	
-	ft_parse(&data, argc, argv);
 	ft_malloc_struct_data(&data);
+	if (data.n_philos >= 1 && data.philos <= 200)
+	{
+		ft_init_elements(argc, argv, &data);
+	}
 	return (0);	
 }

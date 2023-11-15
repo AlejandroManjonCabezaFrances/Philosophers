@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/14 18:53:54 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/11/15 13:42:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <stdio.h>
 # include <errno.h>
 # include <limits.h>
-# include <sys/wait.h> 
+//# include <sys/wait.h> 
 # include <sys/time.h>
 
 /* -- TO FILES DESCRIPTOR -- */
@@ -73,9 +73,11 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	int			n_philos;
-	pthread_t	*thread;
-	t_philo		*philos;
+	int				n_philos;
+	pthread_t		*thread;
+	pthread_mutex_t	*lock;
+	pthread_mutex_t	*forks;
+	t_philo			*philos;
 }	t_data;
 
 

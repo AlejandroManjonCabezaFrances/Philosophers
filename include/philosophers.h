@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Philosophers.h                                     :+:      :+:    :+:   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/09 11:51:00 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/11/14 18:53:54 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,24 +57,25 @@ enum	e_bool
 # define	FORK_LEFT	"🍽️🍴---left---"
 # define	FORK_RIGHT	"---right---🍴🍽️"
 
+typedef struct s_philo t_philo;
+typedef struct s_data t_data;
+
 /* ------ STRUCT ------ */
-typedef struct s_args
+typedef struct s_philo
 {
-	int			n_philos;
+	// struct	s_data	*data;
 	int			time_to_die;
 	int			time_to_eat;
 	int			time_to_sleep;
 	int			n_times_to_eat;
-}	t_args;
-
-typedef struct s_philo
-{
-	t_args		*args;
+	t_data		*data;
 }	t_philo;
 
 typedef struct s_data
 {
-	
+	int			n_philos;
+	pthread_t	*thread;
+	t_philo		*philos;
 }	t_data;
 
 

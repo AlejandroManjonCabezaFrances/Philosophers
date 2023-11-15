@@ -6,14 +6,14 @@
 #    By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/17 09:03:02 by amanjon-          #+#    #+#              #
-#    Updated: 2023/11/09 11:51:43 by amanjon-         ###   ########.fr        #
+#    Updated: 2023/11/13 17:38:46 by amanjon-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philosophers
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror  -I /libft/ft_printf/include -I /libft/gnl/include -I /libft/Libft/include #-pthread
-DEBUG = -g3 -fsanitize=address
+DEBUG = -g3 -fsanitize=thread #-fsanitize=address
 RM = rm -f
 SRC = main.c utils.c
 #SRC = sandbox.c 
@@ -26,7 +26,7 @@ OBJ_DIR = ./obj/
 
 OBJ_FILES = $(SRC:.c=.o)
 OBJ = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
-zs
+
 # COLOURS
 GREEN = \033[0;32m
 COLOR_OFF = \033[0m
@@ -45,7 +45,7 @@ $(OBJ_DIR)%.o:$(SRC_DIR)%.c
 # basic library compiled
 $(NAME): $(OBJ) $(LIBFT)
 	@$(CC) $(CFLAGS) $(DEBUG) $(OBJ) $(LIBFT) -o $(NAME)
-	@echo "$(GREEN)#### minishell ####$(COLOR_OFF)"
+	@echo "$(GREEN)#### philosophers ####$(COLOR_OFF)"
 	@echo "    -Has been compiled ✅"
 
 # all .o files removed

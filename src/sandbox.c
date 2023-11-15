@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 06:50:27 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/08 15:06:13 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/11/14 11:18:23 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 // 	int n_lines;
 // 	int fd;
 
-// 	printf("pthread begin execute...\n");
 // 	i = 0;
 // 	n_lines = *((int *)arg);
 // 	while (i < n_lines)
@@ -48,7 +47,7 @@
 // 	(void) argv;
 
 // 	pthread_t	thread1;
-// 	int value;
+// 	int 		value;
 
 // 	value = atoi(argv[1]);
 // 	if (pthread_create(&thread1, NULL, ft_thread_routine, &value) != 0)
@@ -110,9 +109,9 @@ void	ft_error_exit(char *error)
 
 int main(int argc, char **argv)
 {
-	pthread_t	thread1;
-	pthread_t	thread2;
 	pthread_mutex_t my_mutex;
+	pthread_t		thread1;
+	pthread_t		thread2;
 	
 	if (pthread_create(&thread1, NULL, ft_thread1_routine, NULL) != 0)
 	{
@@ -126,7 +125,7 @@ int main(int argc, char **argv)
 	pthread_join(thread1, NULL);
 	pthread_join(thread2, NULL);
 
-	printf("count value %d\n", count);
+	printf("count value %d\n", count); // en el viceo solo muestra este printf, los demás son por check
 	
 	return (0);
 }

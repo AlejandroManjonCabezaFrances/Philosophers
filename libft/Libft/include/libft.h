@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 09:59:56 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/15 12:57:01 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/16 08:13:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <string.h> 
 # include <stdio.h>
 # include <unistd.h>
-# include <xlocale.h>
+//# include <xlocale.h>
 # include <stdlib.h>
 
 typedef struct s_list

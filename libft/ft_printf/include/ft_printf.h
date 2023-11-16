@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 13:27:38 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/15 12:56:32 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/16 08:13:27 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdarg.h>
 # include <string.h>
 # include <unistd.h>
-# include <xlocale.h>
+//# include <xlocale.h>
 # include <stdlib.h>
 # include "../../Libft/include/libft.h"
 

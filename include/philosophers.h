@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/15 13:42:47 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/16 11:57:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,20 @@ typedef struct s_data
 	pthread_t		*thread;
 	pthread_mutex_t	*lock;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	*my_mutex;
 	t_philo			*philos;
 }	t_data;
 
-
 /*---------- OPERATORS ----------*/
-
-
 
 /* ----------------- FUNCTION MINISHELL----------------- */
 int		main(int argc, char **argv);
 int		ft_atoi_philo(const char *str);
 void	ft_check_max_min(long nbr);
 int		ft_print_error(char *str);
+void	ft_malloc_struct_data(char **argv, t_data *data);
+void	ft_init_elems_and_create_threads(int argc, char **argv, t_data *data);
+void	ft_init_mutex(t_data *data, int i);
+void	ft_init_philo(int argc, char **argv, t_data *data, int i);
 
 #endif

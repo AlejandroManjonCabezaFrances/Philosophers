@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sandbox.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 06:50:27 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/14 11:18:23 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/11/16 13:17:41 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@
 /* ############################  MUTEX  ############################ */
 // ejecutar :  gcc sandbox.c -lpthread -o philosophers
 
-static int count = 10;
+/*static int count = 10;
 pthread_mutex_t my_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void	*ft_thread1_routine(void *unused)
@@ -128,4 +128,47 @@ int main(int argc, char **argv)
 	printf("count value %d\n", count); // en el viceo solo muestra este printf, los demás son por check
 	
 	return (0);
+}*/
+
+/* ##############################  3  ############################## */
+/* ######################## GET TIME IN MS ######################## */
+ /*hora se expresada en milisegundos transcurridos desde el 1 de enero de 1970, conocido como el "epoch" en sistemas Unix.*/
+
+/**
+ * función con tipo dato utilizado generalmente para el tiempo
+*/
+/*uint64_t	get_time(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
+}*/
+
+unsigned long long get_time(void) 
+{
+    struct timeval	tv;
+    gettimeofday(&tv, NULL);
+    return (unsigned long long)(tv.tv_sec) * 1000 + (unsigned long long)(tv.tv_usec) / 1000;
 }
+
+int main(int argc, char **argv) 
+{
+    unsigned long long current_time = get_time();
+    printf("Current time in milliseconds: %llu\n", current_time);
+    return (0);
+}
+
+
+/**
+ * int main para cambiar los ms. de gettimeofday(&tv, NULL) a fecha y hora actual
+*/
+/*int main(int argc, char **argv) {
+    unsigned long long current_time = 1700136498936;  // Reemplaza con el valor obtenido
+    time_t epoch_time = current_time / 1000;  // Convierte milisegundos a segundos
+    struct tm *local_time = localtime(&epoch_time);
+
+    printf("Fecha y hora local: %s", asctime(local_time));
+
+    return 0;
+}*/

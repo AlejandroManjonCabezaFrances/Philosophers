@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 16:35:21 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/15 12:56:41 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/16 08:13:41 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <string.h>
 # include <stdio.h>
 # include <unistd.h>
-# include <xlocale.h>
+//# include <xlocale.h>
 # include <stdlib.h>
 # include <fcntl.h>
 

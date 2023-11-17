@@ -6,18 +6,40 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/16 08:59:13 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/17 10:05:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
+/**
+ * Prints an error passed by arguments and exits the program
+ * @param	char *str
+ * @return	int
+*/
 int	ft_print_error(char *str)
 {
 	printf("%s\n" ,str);
 	exit(EXIT_FAILURE);
 }
 
+/**
+ * Time expressed in milliseconds since January 1, 1970, known as the "epoch"
+ * @param	void
+ * @return	unsigned long long
+*/
+unsigned long long get_time(void) 
+{
+    struct timeval	tv;
+    gettimeofday(&tv, NULL);
+    return (unsigned long long)(tv.tv_sec) * 1000 + (unsigned long long)(tv.tv_usec) / 1000;
+}
+
+/**
+ * Transform a char into an int if the number is positive and between 1 and 9
+ * @param	const char *str
+ * @return	int
+*/
 int	ft_atoi_philo(const char *str)
 {
 	int		i;

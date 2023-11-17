@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/16 11:57:24 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/17 09:46:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef struct s_data
 	pthread_t		*thread;
 	pthread_mutex_t	*lock;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	*my_mutex;
+	pthread_mutex_t	*print_mutex;
 	t_philo			*philos;
 }	t_data;
 

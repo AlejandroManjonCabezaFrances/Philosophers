@@ -28,8 +28,8 @@ void	ft_malloc_struct_data(char **argv, t_data *data)
 	data->lock = malloc(sizeof(pthread_mutex_t) * data->n_philos);
 	if (!data->lock)
 		ft_print_error("error malloc");
-	data->my_mutex = malloc(sizeof(pthread_mutex_t) * data->n_philos);
-	if (!data->my_mutex)
+	data->print_mutex = malloc(sizeof(pthread_mutex_t) * data->n_philos);
+	if (!data->print_mutex)
 		ft_print_error("error malloc");
 }
 
@@ -44,6 +44,8 @@ void	ft_init_mutex(t_data *data, int i)
 	if (pthread_mutex_init(&(data->lock[i]), NULL) != 0)
 		ft_print_error("error init mutex");
 	if (pthread_mutex_init(&(data->forks[i]), NULL) != 0)
+		ft_print_error("error init mutex");
+	if (pthread_mutex_init(&(data->print_mutex[i]), NULL) != 0)
 		ft_print_error("error init mutex");
 }
 
@@ -61,6 +63,8 @@ void	ft_routine(void *philo_struct)
 	t_philo *philo;
 
 	philo = philo_struct;
+	
+
 	
 }
 

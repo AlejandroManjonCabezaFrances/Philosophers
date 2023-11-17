@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 06:50:27 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/16 13:17:41 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/17 09:58:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
 
 /* ##############################  3  ############################## */
 /* ######################## GET TIME IN MS ######################## */
- /*hora se expresada en milisegundos transcurridos desde el 1 de enero de 1970, conocido como el "epoch" en sistemas Unix.*/
+ /*hora expresada en milisegundos transcurridos desde el 1 de enero de 1970, conocido como el "epoch" en sistemas Unix.*/
 
 /**
  * función con tipo dato utilizado generalmente para el tiempo

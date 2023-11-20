@@ -13,7 +13,7 @@
 
 #include "../include/philosophers.h"
 
-void	ft_malloc_struct_data(char **argv, t_data *data)
+void	ft_malloc_init_struct_data(char **argv, t_data *data)
 {
 	data->n_philos = ft_atoi_philo(argv[1]);
 	data->philos = malloc(sizeof(t_philo) * data->n_philos);
@@ -31,11 +31,12 @@ void	ft_malloc_struct_data(char **argv, t_data *data)
 	data->print_mutex = malloc(sizeof(pthread_mutex_t) * data->n_philos);
 	if (!data->print_mutex)
 		ft_print_error("error malloc");
+	data->start_time = ft_get_time();
 }
 
 /**
  * int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr);
- * This function 
+ * This function initialize the mutexes
  * @param	void
  * @return	void
 */
@@ -56,6 +57,7 @@ void	ft_init_philo(int argc, char **argv, t_data *data, int i)
 		data->philos[i].time_to_sleep = ft_atoi_philo(argv[4]);
 		if (argc == 6)
 			data->philos[i].n_times_to_eat = ft_atoi_philo(argv[5]);
+		data->philos->id = i + 1; 
 }
 
 void	ft_routine(void *philo_struct)
@@ -63,9 +65,9 @@ void	ft_routine(void *philo_struct)
 	t_philo *philo;
 
 	philo = philo_struct;
-	
 
-	
+
+	return (NULL);
 }
 
 /**
@@ -92,12 +94,11 @@ int main(int argc, char **argv)
 {
 	// t_philo	philos;
 	t_data	data;
+
 	if (argc < 5 || argc > 6)
 		ft_print_error("Numbers of arguments invaled");
-	ft_malloc_struct_data(argv, &data);
-		if (data.n_philos >= 1 && data.n_philos <= 200)
-	{
+	ft_malloc_init_struct_data(argv, &data);
+	if (data.n_philos >= 1 && data.n_philos <= 200)
 		ft_init_elems_and_create_threads(argc, argv, &data);
-	}
 	return (0);	
 }

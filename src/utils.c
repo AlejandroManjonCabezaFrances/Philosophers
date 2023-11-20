@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/17 10:05:42 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/20 10:35:49 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ int	ft_print_error(char *str)
 
 /**
  * Time expressed in milliseconds since January 1, 1970, known as the "epoch"
+ * (tv.tv_sec) * 1000 -> seconds*1000 y (tv.tv_usec) / 1000 -> microseconds/1000 to go to ms
  * @param	void
  * @return	unsigned long long
 */
-unsigned long long get_time(void) 
+unsigned long long ft_get_time(void) 
 {
     struct timeval	tv;
     gettimeofday(&tv, NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sandbox.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 06:50:27 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/20 15:48:01 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/11/21 13:50:27 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@
 /**
  * función con tipo dato utilizado generalmente para el tiempo
 */
-/*uint64_t	get_time(void)
+/*uint64_t	ft_get_time(void)
 {
 	struct timeval	tv;
 
@@ -176,7 +176,6 @@
 
 //     return (0);
 // }
-
 
 
 

@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/20 10:35:49 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/11/21 14:10:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
+
+void	ft_print_status(t_philo *philo, char *action)
+{
+	uint64_t	time;
+
+	pthread_mutex_lock(philo->data->print_mutex)
+	time = (ft_get_time() - philo->data->start_time);
+	if (philo->finish_program == 0)
+		printf("time:%llums | philo:%d | action:%s\n", time, philo->id, action);
+	pthread_mutex_lock(philo->data->print_mutex)
+}
 
 /**
  * Prints an error passed by arguments and exits the program
@@ -29,12 +40,23 @@ int	ft_print_error(char *str)
  * @param	void
  * @return	unsigned long long
 */
-unsigned long long ft_get_time(void) 
+uint64_t	ft_get_time(void)
 {
-    struct timeval	tv;
-    gettimeofday(&tv, NULL);
-    return (unsigned long long)(tv.tv_sec) * 1000 + (unsigned long long)(tv.tv_usec) / 1000;
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / (uint64_t)1000));
 }
+
+//int	ft_usleep(unsigned int our_time)
+//{
+	//uint64_t	time;
+	
+	//time = ft_get_time() + our_time;
+	//while (ft_get_time() < time)
+		//usleep(100);
+	//return (0);
+//}
 
 /**
  * Transform a char into an int if the number is positive and between 1 and 9

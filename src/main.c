@@ -36,7 +36,8 @@ void	ft_malloc_init_struct_data(char **argv, t_data *data)
 
 /**
  * int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr);
- * This function initialize the mutexes
+ * This function initialize the mutexes and ensures that the last philosopher `s
+ * left fork assignment is correctly connected to the first fork in the table.
  * @param	void
  * @return	void
 */
@@ -44,10 +45,16 @@ void	ft_init_mutex(t_data *data, int i)
 {
 	if (pthread_mutex_init(&(data->lock[i]), NULL) != 0)
 		ft_print_error("error init mutex");
-	if (pthread_mutex_init(&(data->forks[i]), NULL) != 0)
-		ft_print_error("error init mutex");
 	if (pthread_mutex_init(&(data->print_mutex[i]), NULL) != 0)
 		ft_print_error("error init mutex");
+	if (pthread_mutex_init(&(data->forks[i]), NULL) != 0)
+		ft_print_error("error init mutex");
+	data->philos[i].right_fork = data->forks[i];
+	if (i == (data->n_philos - 1))
+		data->philos[i].left_fork = data->forks[0];
+	else
+		data->philos[i].left_fork = data->forks[i + 1];
+
 }
 
 void	ft_init_philo(int argc, char **argv, t_data *data, int i)
@@ -57,7 +64,21 @@ void	ft_init_philo(int argc, char **argv, t_data *data, int i)
 		data->philos[i].time_to_sleep = ft_atoi_philo(argv[4]);
 		if (argc == 6)
 			data->philos[i].n_times_to_eat = ft_atoi_philo(argv[5]);
-		data->philos->id = i + 1; 
+		data->philos->id = i + 1;
+		data->philos->finish_program = 0;
+}
+
+void	ft_take_forks(t_philo *philo)
+{
+	pthread_mutex_lock(philo->right_fork);
+	ft_print_status();
+	pthread_mutex_lock(philo->left_fork);
+	ft_print_status();
+}
+
+void	ft_philo_eat(t_philo *philo)
+{
+	ft_take_forks(philo);
 }
 
 void	ft_routine(void *philo_struct)
@@ -65,8 +86,10 @@ void	ft_routine(void *philo_struct)
 	t_philo *philo;
 
 	philo = philo_struct;
-
-
+	if (philo->id % 2 == 0)
+		usleep(300);
+	ft_philo_eat(philo);
+	
 	return (NULL);
 }
 
@@ -85,7 +108,7 @@ void	ft_init_elems_and_create_threads(int argc, char **argv, t_data *data)
 	{
 		ft_init_mutex(data, i);
 		ft_init_philo(argc, argv, data, i);
-		pthread_create(&(data->thread[i]), NULL, ft_routine, &(data->philos[i]));
+		//pthread_create(&(data->thread[i]), NULL, ft_routine, &(data->philos[i]));
 		i++;
 	}
 }

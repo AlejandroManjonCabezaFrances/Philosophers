@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/20 12:56:54 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/11/21 14:20:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,28 +54,31 @@ enum	e_bool
 # define	SLEEP		"is sleeping 😴💤"
 # define	DIE			"is died 💀"
 # define	THINK		"is thinking 👀"
-# define	FORK_LEFT	"🍽️🍴---left---"
-# define	FORK_RIGHT	"---right---🍴🍽️"
+# define	LEFT_FORK	"🍽️🍴---left---"
+# define	RIGHT_FORK	"---right---🍴🍽️"
 
+/* ------- PROTOTYPES ------- */
 typedef struct s_philo t_philo;
 typedef struct s_data t_data;
 
 /* ------ STRUCT ------ */
 typedef struct s_philo
 {
-	// struct	s_data	*data;
-	int			time_to_die;
-	int			time_to_eat;
-	int			time_to_sleep;
-	int			n_times_to_eat;
-	int			id;
-	t_data		*data;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				n_times_to_eat;
+	int				id;
+	int				finish_program;
+	pthread_mutex_t	right_fork;
+	pthread_mutex_t	left_fork;
+	t_data			*data;
 }	t_philo;
 
 typedef struct s_data
 {
 	int					n_philos;
-	unsigned long long	start_time;
+	uint64_t			start_time;
 	pthread_t			*thread;
 	pthread_mutex_t		*lock;
 	pthread_mutex_t		*forks;

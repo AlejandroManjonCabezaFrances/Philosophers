@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/21 14:10:09 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/22 12:59:54 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,15 @@ void	ft_print_status(t_philo *philo, char *action)
 {
 	uint64_t	time;
 
-	pthread_mutex_lock(philo->data->print_mutex)
+	printf("ft_print_status\n");
+	//pthread_mutex_lock(philo->data->print_mutex);
+	printf("ft_print_status_1\n");
 	time = (ft_get_time() - philo->data->start_time);
+	printf("time = %lu\n", time);
+	printf("ft_print_status_2\n");
 	if (philo->finish_program == 0)
-		printf("time:%llums | philo:%d | action:%s\n", time, philo->id, action);
-	pthread_mutex_lock(philo->data->print_mutex)
+		printf("time:%lums | philo:%d | action:%s\n", time, philo->id, action);
+	//pthread_mutex_unlock(philo->data->print_mutex);
 }
 
 /**
@@ -43,20 +47,25 @@ int	ft_print_error(char *str)
 uint64_t	ft_get_time(void)
 {
 	struct timeval	tv;
+	uint64_t		result;
 
+	printf("ft_get_time\n");
 	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / (uint64_t)1000));
+	printf("ft_get_time_1\n");
+	result = (tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / (uint64_t)1000);
+	printf("result = %lu\n", result);
+	return (result);
 }
 
-//int	ft_usleep(unsigned int our_time)
-//{
-	//uint64_t	time;
+int	ft_usleep(unsigned int our_time)
+{
+	uint64_t	time;
 	
-	//time = ft_get_time() + our_time;
-	//while (ft_get_time() < time)
-		//usleep(100);
-	//return (0);
-//}
+	time = ft_get_time() + our_time;
+	while (ft_get_time() < time)
+		usleep(100);
+	return (0);
+}
 
 /**
  * Transform a char into an int if the number is positive and between 1 and 9

@@ -32,6 +32,7 @@ void	ft_malloc_init_struct_data(char **argv, t_data *data)
 	if (!data->print_mutex)
 		ft_print_error("error malloc");
 	data->start_time = ft_get_time();
+	//printf("data->start_time = %lu\n", data->start_time);
 }
 
 /**
@@ -43,51 +44,65 @@ void	ft_malloc_init_struct_data(char **argv, t_data *data)
 */
 void	ft_init_mutex(t_data *data, int i)
 {
+	printf("ft_init_mutex\n");
 	if (pthread_mutex_init(&(data->lock[i]), NULL) != 0)
 		ft_print_error("error init mutex");
 	if (pthread_mutex_init(&(data->print_mutex[i]), NULL) != 0)
 		ft_print_error("error init mutex");
 	if (pthread_mutex_init(&(data->forks[i]), NULL) != 0)
 		ft_print_error("error init mutex");
-	data->philos[i].right_fork = data->forks[i];
+	data->philos[i].right_fork = &data->forks[i];
 	if (i == (data->n_philos - 1))
-		data->philos[i].left_fork = data->forks[0];
+		data->philos[i].left_fork = &data->forks[0];
 	else
-		data->philos[i].left_fork = data->forks[i + 1];
+		data->philos[i].left_fork = &data->forks[i + 1];
 
 }
 
 void	ft_init_philo(int argc, char **argv, t_data *data, int i)
 {
-		data->philos[i].time_to_die = ft_atoi_philo(argv[2]);
-		data->philos[i].time_to_eat = ft_atoi_philo(argv[3]);
-		data->philos[i].time_to_sleep = ft_atoi_philo(argv[4]);
-		if (argc == 6)
-			data->philos[i].n_times_to_eat = ft_atoi_philo(argv[5]);
-		data->philos->id = i + 1;
-		data->philos->finish_program = 0;
+	printf("ft_init_philo\n");
+	data->philos[i].time_to_die = ft_atoi_philo(argv[2]);
+	data->philos[i].time_to_eat = ft_atoi_philo(argv[3]);
+	data->philos[i].time_to_sleep = ft_atoi_philo(argv[4]);
+	if (argc == 6)
+		data->philos[i].n_times_to_eat = ft_atoi_philo(argv[5]);
+	data->philos->id = i + 1;
+	data->philos->finish_program = 0;
+	data->philos->data = data;
 }
 
 void	ft_take_forks(t_philo *philo)
 {
+	printf("ft_take_forks\n");
 	pthread_mutex_lock(philo->right_fork);
-	ft_print_status();
+	printf("ft_take_forks_2\n");
+	ft_print_status(philo, TAKE_RIGHT_FORK);
 	pthread_mutex_lock(philo->left_fork);
-	ft_print_status();
+	ft_print_status(philo, TAKE_LEFT_FORK);
+
+	//DROP FORKS
+	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
 }
 
 void	ft_philo_eat(t_philo *philo)
 {
+	printf("ft_philo_eat\n");
+	//pthread_mutex_unlock(philo->data->print_mutex);
 	ft_take_forks(philo);
 }
 
-void	ft_routine(void *philo_struct)
+void	*ft_routine(void *philo_struct)
 {
 	t_philo *philo;
 
 	philo = philo_struct;
-	if (philo->id % 2 == 0)
-		usleep(300);
+	printf("ft_routine\n");
+	//if (philo->id % 2 == 0)
+		//ft_usleep(200);
+	printf("ft_routine_2\n");
+	//pthread_mutex_lock(philo->data->print_mutex);
 	ft_philo_eat(philo);
 	
 	return (NULL);
@@ -106,9 +121,10 @@ void	ft_init_elems_and_create_threads(int argc, char **argv, t_data *data)
 	i = 0;
 	while (i < data->n_philos)
 	{
+		printf("ft_init_elements\n");
 		ft_init_mutex(data, i);
 		ft_init_philo(argc, argv, data, i);
-		//pthread_create(&(data->thread[i]), NULL, ft_routine, &(data->philos[i]));
+		pthread_create(&(data->thread[i]), NULL, ft_routine, &(data->philos[i]));
 		i++;
 	}
 }

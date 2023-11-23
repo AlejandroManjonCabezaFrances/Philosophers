@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/22 12:59:54 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/23 12:53:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,14 @@ void	ft_print_status(t_philo *philo, char *action)
 {
 	uint64_t	time;
 
-	printf("ft_print_status\n");
-	//pthread_mutex_lock(philo->data->print_mutex);
 	printf("ft_print_status_1\n");
+	pthread_mutex_lock(philo->data->print_mutex);
 	time = (ft_get_time() - philo->data->start_time);
-	printf("time = %lu\n", time);
+	/* printf("time = %lu\n", time); */
 	printf("ft_print_status_2\n");
 	if (philo->finish_program == 0)
 		printf("time:%lums | philo:%d | action:%s\n", time, philo->id, action);
-	//pthread_mutex_unlock(philo->data->print_mutex);
+	pthread_mutex_unlock(philo->data->print_mutex);
 }
 
 /**
@@ -49,11 +48,11 @@ uint64_t	ft_get_time(void)
 	struct timeval	tv;
 	uint64_t		result;
 
-	printf("ft_get_time\n");
+	/* printf("ft_get_time\n"); */
 	gettimeofday(&tv, NULL);
-	printf("ft_get_time_1\n");
+	/* printf("ft_get_time_1\n"); */
 	result = (tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / (uint64_t)1000);
-	printf("result = %lu\n", result);
+	/* printf("result = %lu\n", result); */
 	return (result);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/23 12:13:26 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/27 10:43:56 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@
 # define	EAT			"is eating 🍉"
 # define	SLEEP		"is sleeping 😴💤"
 # define	DIE			"is died 💀"
-# define	THINK		"is thinking 👀"
-# define	TAKE_LEFT_FORK	"🍽️🍴has taken a left fork"
-# define	TAKE_RIGHT_FORK	"has taken a right fork🍴🍽️"
+# define	THINK		"is thinking 🤔⏳"
+# define	TAKE_LEFT_FORK	"⭕ 🍽️🍴has taken a left fork🍽️🍴"
+# define	TAKE_RIGHT_FORK	"🍴🍽️has taken a right fork🍴🍽️  ⭕"
 
 /* ------- eNum ------- */
 enum	e_bool	

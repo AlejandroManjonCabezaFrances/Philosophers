@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/23 12:53:17 by marvin           ###   ########.fr       */
+/*   Updated: 2023/11/27 10:37:29 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,12 @@ void	ft_print_status(t_philo *philo, char *action)
 {
 	uint64_t	time;
 
-	printf("ft_print_status_1\n");
-	pthread_mutex_lock(philo->data->print_mutex);
+	pthread_mutex_lock(philo->print_mutex);
 	time = (ft_get_time() - philo->data->start_time);
-	/* printf("time = %lu\n", time); */
-	printf("ft_print_status_2\n");
+	// printf("time = %llu\n", time);
 	if (philo->finish_program == 0)
-		printf("time:%lums | philo:%d | action:%s\n", time, philo->id, action);
-	pthread_mutex_unlock(philo->data->print_mutex);
+		printf("time:%llums | philo:%d | action: %s\n", time, philo->id, action);
+	pthread_mutex_unlock(philo->print_mutex);
 }
 
 /**
@@ -48,11 +46,8 @@ uint64_t	ft_get_time(void)
 	struct timeval	tv;
 	uint64_t		result;
 
-	/* printf("ft_get_time\n"); */
 	gettimeofday(&tv, NULL);
-	/* printf("ft_get_time_1\n"); */
 	result = (tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / (uint64_t)1000);
-	/* printf("result = %lu\n", result); */
 	return (result);
 }
 

@@ -55,28 +55,28 @@ void	ft_init_mutex(t_data *data, int i)
 {
 	if (pthread_mutex_init(&(data->lock[i]), NULL) != 0)
 		ft_print_error("error init mutex");
-	data->philos[i].lock = &(data->lock[i]);
+	data->lock = &(data->lock[i]);
 	if (pthread_mutex_init(&(data->print_mutex[i]), NULL) != 0)
 		ft_print_error("error init mutex");
-	data->philos[i].print_mutex = &(data->print_mutex[i]);
+	data->print_mutex = &(data->print_mutex[i]);
 	if (pthread_mutex_init(&(data->forks[i]), NULL) != 0)
 		ft_print_error("error init mutex");
-	data->philos[i].right_fork = &data->forks[i];
+	data->philos[i].right_fork = &data->forks[i];	//
 	if (i == (data->n_philos - 1))
-		data->philos[i].left_fork = &data->forks[0];
+		data->philos[i].left_fork = &data->forks[0];	//
 	else
-		data->philos[i].left_fork = &data->forks[i + 1];
+		data->philos[i].left_fork = &data->forks[i + 1];	//
 }
 
 void	ft_init_philo(int argc, char **argv, t_data *data, int i)
 {
-	data->philos[i].time_to_die = ft_atoi_philo(argv[2]);
-	data->philos[i].time_to_eat = ft_atoi_philo(argv[3]);
-	data->philos[i].time_to_sleep = ft_atoi_philo(argv[4]);
+	data->time_to_die = ft_atoi_philo(argv[2]);
+	data->time_to_eat = ft_atoi_philo(argv[3]);
+	data->time_to_sleep = ft_atoi_philo(argv[4]);
 	if (argc == 6)
-		data->philos[i].n_times_to_eat = ft_atoi_philo(argv[5]);
+		data->n_times_to_eat = ft_atoi_philo(argv[5]);
 	data->philos[i].id = i + 1;
-	data->philos[i].finish_program = 0;
+	data->finish_program = 0;
 	data->philos[i].last_meal = 0;
 	data->philos[i].data = data;
 }
@@ -94,18 +94,18 @@ void	ft_drop_forks(t_philo *philo)
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 	ft_print_status(philo, SLEEP);
-	ft_usleep(philo->time_to_sleep);
+	ft_usleep(philo->data->time_to_sleep);
 }
 
 void	ft_philo_eat(t_philo *philo)
 {
 	// pthread_mutex_unlock(philo->print_mutex);	// 1 -> entrada función
 	ft_take_forks(philo);
-	pthread_mutex_lock(philo->print_mutex);
+	pthread_mutex_lock(philo->data->print_mutex);
 	philo->last_meal = ft_get_time() - philo->data->start_time;
 	ft_print_status(philo, EAT);
-	pthread_mutex_unlock(philo->print_mutex);
-	ft_usleep(philo->time_to_eat);
+	pthread_mutex_unlock(philo->data->print_mutex);
+	ft_usleep(philo->data->time_to_eat);
 	ft_drop_forks(philo);
 	ft_print_status(philo, THINK);
 	// pthread_mutex_lock(philo->print_mutex);	// 2 -> salida función
@@ -140,8 +140,11 @@ void	ft_init_elems_and_create_threads(int argc, char **argv, t_data *data)
 	while (i < data->n_philos)
 	{
 		ft_init_mutex(data, i);
+		printf("fin ft_init mutex\n\n\n");
 		ft_init_philo(argc, argv, data, i);
+		printf("fin ft_init philo\n\n\n");
 		pthread_create(&(data->thread[i]), NULL, ft_routine, &(data->philos[i]));
+		printf("fin ft_crear hilos\n\n\n");
 		i++;
 	}
 	// i = 0;

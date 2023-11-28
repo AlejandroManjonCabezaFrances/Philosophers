@@ -60,17 +60,21 @@ void	ft_init_mutex(t_data *data, int i)
 {
 	if (pthread_mutex_init(&(data->lock[i]), NULL) != 0)
 		ft_print_error("error init mutex");
+	printf("****************3\n");
 	// data->lock = &(data->lock[i]);
 	if (pthread_mutex_init(&(data->print_mutex[i]), NULL) != 0)
 		ft_print_error("error init mutex");
+	printf("****************4\n");
 	// data->print_mutex = &(data->print_mutex[i]);
 	if (pthread_mutex_init(&(data->forks[i]), NULL) != 0)
 		ft_print_error("error init mutex");
+	printf("****************5\n");
 	data->philos[i].right_fork = &data->forks[i];	//
 	if (i == (data->n_philos - 1))
 		data->philos[i].left_fork = &data->forks[0];	//
 	else
 		data->philos[i].left_fork = &data->forks[i + 1];	//
+	printf("****************6\n");
 }
 
 void	ft_init_philo(int argc, char **argv, t_data *data, int i)
@@ -78,43 +82,56 @@ void	ft_init_philo(int argc, char **argv, t_data *data, int i)
 	data->time_to_die = ft_atoi_philo(argv[2]);
 	data->time_to_eat = ft_atoi_philo(argv[3]);
 	data->time_to_sleep = ft_atoi_philo(argv[4]);
+	printf("****************8\n");
 	if (argc == 6)
 		data->n_times_to_eat = ft_atoi_philo(argv[5]);
+	printf("****************9\n");
 	data->philos[i].id = i + 1;
 	data->finish_program = 0;
 	data->philos[i].last_meal = 0;
 	data->philos[i].data = data;
+	printf("****************10\n");
 }
 
 void	ft_take_forks(t_philo *philo)
 {
 	pthread_mutex_lock(philo->right_fork);
+	printf("****************15\n");
 	ft_print_status(philo, TAKE_RIGHT_FORK);
+	printf("****************18\n");
 	pthread_mutex_lock(philo->left_fork);
 	ft_print_status(philo, TAKE_LEFT_FORK);
+	printf("****************19\n");
 }
 
 void	ft_drop_forks(t_philo *philo)
 {
+	printf("****************23\n");
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 	ft_print_status(philo, SLEEP);
+	printf("****************24\n");
 	ft_usleep(philo->data->time_to_sleep);
 }
 
 void	ft_philo_eat(t_philo *philo)
 {
-	pthread_mutex_unlock(philo->data->print_mutex);	// 1 -> entrada función
+	printf("****************14\n");
+	pthread_mutex_unlock(philo->data->print_mutex);				// 1 -> entrada función
 	ft_take_forks(philo);
 	pthread_mutex_lock(philo->data->print_mutex);
 	philo->last_meal = 0;
-	philo->last_meal = ft_get_time() - philo->data->start_time;
-	// ft_print_status(philo, EAT);  						//SEGV ***************
+	printf("****************20\n");
+	// philo->last_meal = ft_get_time() - philo->data->start_time;
+	ft_print_status(philo, EAT); 
+	printf("****************22\n"); 								// Evita SEGV 112
 	pthread_mutex_unlock(philo->data->print_mutex);
-	// ft_usleep(philo->data->time_to_eat);					//SEGV ***************
-	// ft_drop_forks(philo);									//SEGV ***************
+	// ft_usleep(philo->data->time_to_eat);							// Evita SEGV 112
+	ft_drop_forks(philo);
+	printf("****************25\n");									// Evita SEGV 112
 	ft_print_status(philo, THINK);
-	pthread_mutex_lock(philo->data->print_mutex);	// 2 -> salida función
+	pthread_mutex_lock(philo->data->print_mutex);					// 2 -> salida función
+	printf("****************26\n");
 }
 
 void	*ft_routine(void *philo_struct)
@@ -122,12 +139,15 @@ void	*ft_routine(void *philo_struct)
 	t_philo *philo;
 
 	philo = philo_struct;
-	// if (philo->id % 2 == 0)
+	printf("****************12\n");
+	// if (philo->id % 2 == 0)									// bucle infinito
 	// 	ft_usleep(200);
 
-	pthread_mutex_lock(philo->data->print_mutex);		// 1 -> entrada función
+	pthread_mutex_lock(philo->data->print_mutex);				// 1 -> entrada función
+	printf("****************13\n");
 	ft_philo_eat(philo);
-	pthread_mutex_unlock(philo->data->print_mutex);	// 2 -> salida función
+	printf("****************27\n");
+	pthread_mutex_unlock(philo->data->print_mutex);				// 2 -> salida función
 	
 	return (NULL);
 }
@@ -146,14 +166,16 @@ void	ft_init_elems_and_create_threads(int argc, char **argv, t_data *data)
 	// printf("data->thread = %lu\n", (unsigned long)data->thread);
 	while (i < data->n_philos)
 	{
+		printf("****************2\n");
 		ft_init_mutex(data, i);
-		printf("fin ft_init mutex\n\n\n");
+		printf("****************7\n");
 		ft_init_philo(argc, argv, data, i);
-		printf("fin ft_init philo\n\n\n");
+		printf("****************11\n");
 		pthread_create(&(data->thread[i]), NULL, ft_routine, &(data->philos[i]));
-		printf("fin ft_crear hilos\n\n\n");
 		i++;
+		printf("****************28\n");
 	}
+	printf("****************29\n");
 	// i = 0;
 	// while (i < data->n_philos)
 	// {
@@ -166,17 +188,26 @@ int main(int argc, char **argv)
 {
 	// t_philo	philos;
 	t_data	data;
+	int i;
 
 	if (argc < 5 || argc > 6)
 		ft_print_error("Numbers of arguments invaled");
 	ft_malloc_init_struct_data(argv, &data);
 	if (data.n_philos >= 1 && data.n_philos <= 200)
 	{
+		printf("****************1\n");
 		pthread_mutex_lock(data.print_mutex);
 		ft_init_elems_and_create_threads(argc, argv, &data);
 		pthread_mutex_unlock(data.print_mutex);
 	}
-	printf("llega aqui******______________\n");
-	pthread_join(*data.thread, NULL);	// Evita un SEGV, pero se queda pillado aqui mismo
+	printf("****************30\n");
+	// pthread_join(*data.thread, NULL);		// Evita un SEGV, pero se queda pillado aqui mismo
+	i = 0;
+	while (i < data.n_philos)					// Evita SEGV 112
+	{
+		pthread_join(data.thread[i], NULL);
+		i++;
+	}
+	printf("****************31\n");
 	return (0);	
 }

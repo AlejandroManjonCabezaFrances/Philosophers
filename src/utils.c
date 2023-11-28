@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/28 09:07:28 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/11/28 15:41:41 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,16 @@ void	ft_print_status(t_philo *philo, char *action)
 {
 	uint64_t	time;
 
-	pthread_mutex_lock(philo->data->print_mutex);
+	pthread_mutex_lock(philo->data->print_mutex);	//bucle infitnito aqui		
+	printf("****************16\n");
+	printf("philo->data->print_mutex = %p\n", (void *)philo->data->print_mutex);
+	printf("PROBLEMITA___________1\n");
 	time = (ft_get_time() - philo->data->start_time);
 	// printf("time = %llu\n", time);
 	if (philo->data->finish_program == 0)
 		printf("time:%llums | philo:%d | action: %s\n", time, philo->id, action);
-	pthread_mutex_unlock(philo->data->print_mutex);
+	printf("****************17\n");
+	pthread_mutex_unlock(philo->data->print_mutex);	//bucle infitnito aqui	
 }
 
 /**
@@ -57,7 +61,10 @@ int	ft_usleep(unsigned int our_time)
 	
 	time = ft_get_time() + our_time;
 	while (ft_get_time() < time)
+	{
 		usleep(100);
+		printf("ft_usleep_count\n");
+	}
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/27 15:33:12 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/11/28 07:54:08 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@
 # define TRUE		1 */
 
 /* ------- EMOJIS ------- */
-# define	EAT			"is eating 🍉"
-# define	SLEEP		"is sleeping 😴💤"
-# define	DIE			"is died 💀"
-# define	THINK		"is thinking 🤔⏳"
+# define	EAT				"is eating 🍉"
+# define	SLEEP			"is sleeping 😴💤"
+# define	DIE				"is died 💀"
+# define	THINK			"is thinking 🤔⏳"
 # define	TAKE_LEFT_FORK	"⭕ 🍽️🍴has taken a left fork🍽️🍴"
 # define	TAKE_RIGHT_FORK	"🍴🍽️has taken a right fork🍴🍽️  ⭕"
 

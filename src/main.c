@@ -99,7 +99,7 @@ void	ft_drop_forks(t_philo *philo)
 
 void	ft_philo_eat(t_philo *philo)
 {
-	// pthread_mutex_unlock(philo->print_mutex);	// 1 -> entrada función
+	pthread_mutex_unlock(philo->data->print_mutex);	// 1 -> entrada función
 	ft_take_forks(philo);
 	pthread_mutex_lock(philo->data->print_mutex);
 	philo->last_meal = ft_get_time() - philo->data->start_time;
@@ -108,7 +108,7 @@ void	ft_philo_eat(t_philo *philo)
 	ft_usleep(philo->data->time_to_eat);
 	ft_drop_forks(philo);
 	ft_print_status(philo, THINK);
-	// pthread_mutex_lock(philo->print_mutex);	// 2 -> salida función
+	pthread_mutex_lock(philo->data->print_mutex);	// 2 -> salida función
 }
 
 void	*ft_routine(void *philo_struct)
@@ -119,9 +119,9 @@ void	*ft_routine(void *philo_struct)
 	if (philo->id % 2 == 0)
 		ft_usleep(200);
 
-	// pthread_mutex_lock(philo->print_mutex);		// 1 -> entrada función
+	pthread_mutex_lock(philo->data->print_mutex);		// 1 -> entrada función
 	ft_philo_eat(philo);
-	// pthread_mutex_unlock(philo->print_mutex);	// 2 -> salida función
+	pthread_mutex_unlock(philo->data->print_mutex);	// 2 -> salida función
 	
 	return (NULL);
 }

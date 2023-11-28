@@ -24,18 +24,23 @@
 void	ft_malloc_init_struct_data(char **argv, t_data *data)
 {
 	data->n_philos = ft_atoi_philo(argv[1]);
+	data->philos = NULL;
 	data->philos = malloc(sizeof(t_philo) * data->n_philos);
 	if (!data->philos)
 		ft_print_error("error malloc");
+	data->thread = NULL;
 	data->thread = malloc(sizeof(pthread_t) * data->n_philos);
 	if (!data->thread)
 		ft_print_error("error malloc");
+		data->forks = NULL;
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->n_philos);
 	if (!data->forks)
 		ft_print_error("error malloc");
+	data->lock = NULL;
 	data->lock = malloc(sizeof(pthread_mutex_t) * data->n_philos);
 	if (!data->lock)
 		ft_print_error("error malloc");
+	data->print_mutex = NULL;
 	data->print_mutex = malloc(sizeof(pthread_mutex_t) * data->n_philos);
 	if (!data->print_mutex)
 		ft_print_error("error malloc");
@@ -55,10 +60,10 @@ void	ft_init_mutex(t_data *data, int i)
 {
 	if (pthread_mutex_init(&(data->lock[i]), NULL) != 0)
 		ft_print_error("error init mutex");
-	data->lock = &(data->lock[i]);
+	// data->lock = &(data->lock[i]);
 	if (pthread_mutex_init(&(data->print_mutex[i]), NULL) != 0)
 		ft_print_error("error init mutex");
-	data->print_mutex = &(data->print_mutex[i]);
+	// data->print_mutex = &(data->print_mutex[i]);
 	if (pthread_mutex_init(&(data->forks[i]), NULL) != 0)
 		ft_print_error("error init mutex");
 	data->philos[i].right_fork = &data->forks[i];	//
@@ -102,11 +107,12 @@ void	ft_philo_eat(t_philo *philo)
 	pthread_mutex_unlock(philo->data->print_mutex);	// 1 -> entrada función
 	ft_take_forks(philo);
 	pthread_mutex_lock(philo->data->print_mutex);
+	philo->last_meal = 0;
 	philo->last_meal = ft_get_time() - philo->data->start_time;
-	ft_print_status(philo, EAT);
+	// ft_print_status(philo, EAT);  						//SEGV ***************
 	pthread_mutex_unlock(philo->data->print_mutex);
-	ft_usleep(philo->data->time_to_eat);
-	ft_drop_forks(philo);
+	// ft_usleep(philo->data->time_to_eat);					//SEGV ***************
+	// ft_drop_forks(philo);									//SEGV ***************
 	ft_print_status(philo, THINK);
 	pthread_mutex_lock(philo->data->print_mutex);	// 2 -> salida función
 }
@@ -116,8 +122,8 @@ void	*ft_routine(void *philo_struct)
 	t_philo *philo;
 
 	philo = philo_struct;
-	if (philo->id % 2 == 0)
-		ft_usleep(200);
+	// if (philo->id % 2 == 0)
+	// 	ft_usleep(200);
 
 	pthread_mutex_lock(philo->data->print_mutex);		// 1 -> entrada función
 	ft_philo_eat(philo);
@@ -137,6 +143,7 @@ void	ft_init_elems_and_create_threads(int argc, char **argv, t_data *data)
 	int i;
 
 	i = 0;
+	// printf("data->thread = %lu\n", (unsigned long)data->thread);
 	while (i < data->n_philos)
 	{
 		ft_init_mutex(data, i);
@@ -169,7 +176,7 @@ int main(int argc, char **argv)
 		ft_init_elems_and_create_threads(argc, argv, &data);
 		pthread_mutex_unlock(data.print_mutex);
 	}
-	pthread_join(*data.thread, NULL);	// Evita esto --> WARNING: ThreadSanitizer: thread leak (pid=31890)
-	// printf("llega aqui******______________\n");
+	printf("llega aqui******______________\n");
+	pthread_join(*data.thread, NULL);	// Evita un SEGV, pero se queda pillado aqui mismo
 	return (0);	
 }

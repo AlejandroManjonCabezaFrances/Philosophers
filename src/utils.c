@@ -6,12 +6,17 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/27 10:37:29 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/11/29 17:28:59 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
+/**
+ * Prints the status of each thread. time, philo identifier and action
+ * @param	t_philo *philo, char *action
+ * @return	void
+*/
 void	ft_print_status(t_philo *philo, char *action)
 {
 	uint64_t	time;
@@ -19,7 +24,7 @@ void	ft_print_status(t_philo *philo, char *action)
 	pthread_mutex_lock(philo->print_mutex);
 	time = (ft_get_time() - philo->data->start_time);
 	// printf("time = %llu\n", time);
-	if (philo->finish_program == 0)
+	if (philo->data->finish_program == 0)
 		printf("time:%llums | philo:%d | action: %s\n", time, philo->id, action);
 	pthread_mutex_unlock(philo->print_mutex);
 }
@@ -51,13 +56,19 @@ uint64_t	ft_get_time(void)
 	return (result);
 }
 
+/**
+ * This function creates a pause in program execution until the specified time has passed
+ * usleep(100); 100 microsegundos, 10 e-6 (0,000001 segundos)
+ * @param	unsigned int our_time
+ * @return	int
+*/
 int	ft_usleep(unsigned int our_time)
 {
 	uint64_t	time;
 	
 	time = ft_get_time() + our_time;
 	while (ft_get_time() < time)
-		usleep(100);
+		usleep(100);					// 100 microsegundos, 10 e-6 (0,000001 segundos)
 	return (0);
 }
 

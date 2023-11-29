@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/28 08:02:38 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:30:01 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,22 @@ typedef struct s_data t_data;
 /* ------ STRUCT ------ */
 typedef struct s_philo
 {
-	int					time_to_die;
-	int					time_to_eat;
-	int					time_to_sleep;
-	int					finish_program;
-	int					n_times_to_eat;
 	int					id;
 	uint64_t			last_meal;
 	pthread_mutex_t		*right_fork;
 	pthread_mutex_t		*left_fork;
-	pthread_mutex_t		*print_mutex;
-	pthread_mutex_t		*lock;
+	// pthread_mutex_t		*print_mutex;	// Al comentar estos mutex, funcion
+	// pthread_mutex_t		*lock;			// ft_usleep se queda en bucle infinito
 	t_data				*data;
 }	t_philo;
 
 typedef struct s_data
 {
+	int					time_to_die; 	//
+	int					time_to_eat;	//
+	int					time_to_sleep;	//
+	int					n_times_to_eat;	//
+	int					finish_program;	//
 	int					n_philos;
 	uint64_t			start_time;
 	pthread_t			*thread;

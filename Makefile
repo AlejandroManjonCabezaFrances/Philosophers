@@ -6,13 +6,14 @@
 #    By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/17 09:03:02 by amanjon-          #+#    #+#              #
-#    Updated: 2023/11/13 17:38:46 by amanjon-         ###   ########.fr        #
+#    Updated: 2023/11/29 15:11:23 by amanjon-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philosophers
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror  -I /libft/ft_printf/include -I /libft/gnl/include -I /libft/Libft/include #-pthread
+#CFLAGS = -I /libft/ft_printf/include -I /libft/gnl/include -I /libft/Libft/include #-pthread
 DEBUG = -g3 -fsanitize=thread #-fsanitize=address
 RM = rm -f
 SRC = main.c utils.c

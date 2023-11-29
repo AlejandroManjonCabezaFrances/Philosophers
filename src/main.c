@@ -156,6 +156,7 @@ int main(int argc, char **argv)
 {
 	// t_philo	philos;
 	t_data	data;
+	// int 	i;
 
 	if (argc < 5 || argc > 6)
 		ft_print_error("Numbers of arguments invaled");
@@ -166,7 +167,15 @@ int main(int argc, char **argv)
 		ft_init_elems_and_create_threads(argc, argv, &data);
 		pthread_mutex_unlock(data.print_mutex);
 	}
-	pthread_join(*data.thread, NULL);	// Evita esto --> WARNING: ThreadSanitizer: thread leak (pid=31890)
-	// printf("llega aqui******______________\n");
+	pthread_join(*data.thread, NULL);		// Evita esto --> WARNING: ThreadSanitizer: thread leak (pid=31890)
+	// i = 0;
+	// while (i < data.n_philos)					// Evita SEGV 112
+	// {
+	// 	pthread_join(data.thread[i], NULL);		// solo pasa una vez por el bucle
+	// 	i++;
+	// 	// printf("data.n_philos = %d\n", data.n_philos);
+	// 	// printf("i = %d\n", i);
+	// }
+	printf("llega aqui******______________\n");
 	return (0);	
 }

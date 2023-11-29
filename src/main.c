@@ -62,10 +62,15 @@ void	ft_init_mutex(t_data *data, int i)
 	if (pthread_mutex_init(&(data->forks[i]), NULL) != 0)
 		ft_print_error("error init mutex");
 	data->philos[i].right_fork = &data->forks[i];
-	if (i == (data->n_philos - 1))
-		data->philos[i].left_fork = &data->forks[0];
-	else
-		data->philos[i].left_fork = &data->forks[i + 1];
+
+	// PRIMERA OPCIÓN
+	data->philos[i].left_fork = &data->forks[(i + 1) % data->n_philos];
+
+	// SEGUNDA OPCIÓN
+	// if (i == (data->n_philos - 1))
+	// 	data->philos[i].left_fork = &data->forks[0];
+	// else
+	// 	data->philos[i].left_fork = &data->forks[i + 1];
 }
 
 void	ft_init_philo(int argc, char **argv, t_data *data, int i)

@@ -98,6 +98,7 @@ void	ft_take_forks(t_philo *philo)
 
 void	ft_drop_forks(t_philo *philo)
 {
+	printf("suelto tenedores\n");
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 	ft_print_status(philo, SLEEP);
@@ -108,10 +109,10 @@ void	ft_philo_eat(t_philo *philo)
 {
 	pthread_mutex_unlock(philo->print_mutex);	// 1 -> entrada función
 	ft_take_forks(philo);
-	pthread_mutex_lock(philo->print_mutex);
+	pthread_mutex_lock(philo->lock);
 	philo->last_meal = ft_get_time() - philo->data->start_time;
 	ft_print_status(philo, EAT);
-	pthread_mutex_unlock(philo->print_mutex);
+	pthread_mutex_unlock(philo->lock);
 	ft_usleep(philo->data->time_to_eat);
 	ft_drop_forks(philo);
 	ft_print_status(philo, THINK);
@@ -151,7 +152,7 @@ void	ft_init_elems_and_create_threads(char **argv, t_data *data)
 		pthread_create(&(data->thread[i]), NULL, ft_routine, &(data->philos[i]));
 		i++;
 	}
-	// i = 0;
+	i = 0;
 	// while (i < data->n_philos)
 	// {
 	// 	pthread_create(&(data->thread[i]), NULL, ft_routine, &(data->philos[i]));

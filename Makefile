@@ -6,7 +6,7 @@
 #    By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/17 09:03:02 by amanjon-          #+#    #+#              #
-#    Updated: 2023/11/30 18:33:29 by amanjon-         ###   ########.fr        #
+#    Updated: 2023/12/04 19:07:13 by amanjon-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ $(OBJ_DIR)%.o:$(SRC_DIR)%.c
 # basic library compiled
 $(NAME): $(OBJ) $(LIBFT)
 	@$(CC) $(CFLAGS) $(DEBUG) $(OBJ) $(LIBFT) -o $(NAME)
-	@echo "$(GREEN)#### philosophers ####$(COLOR_OFF)"
+	@echo "$(GREEN)#### philo ####$(COLOR_OFF)"
 	@echo "    -Has been compiled ✅"
 
 # all .o files removed

@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/30 18:55:40 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/04 15:20:53 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,12 @@ typedef struct s_philo
 {
 	int					id;
 	uint64_t			last_meal;
-	pthread_mutex_t		*right_fork;
-	pthread_mutex_t		*left_fork;
-	pthread_mutex_t		*print_mutex;
-	pthread_mutex_t		*lock;
+	int					left_fork;
+	int					*right_fork;
+	pthread_mutex_t		l_fork;			// se inicializa
+	pthread_mutex_t		*r_fork;		// no se inicializa
+	// pthread_mutex_t		*print_mutex;
+	// pthread_mutex_t		*lock;
 	t_data				*data;
 }	t_philo;
 
@@ -84,7 +86,7 @@ typedef struct s_data
 	int					finish_program;
 	uint64_t			start_time;
 	pthread_t			*thread;
-	pthread_mutex_t		*forks;
+	// pthread_mutex_t		*forks;
 	pthread_mutex_t		*print_mutex;
 	pthread_mutex_t		*lock;
 	t_philo				*philos;			//check por si puedo quitarlo
@@ -106,5 +108,6 @@ void				*ft_routine(void *philo_struct);
 int					ft_usleep(unsigned int our_time);
 void				ft_take_forks(t_philo *philo);
 void				ft_drop_forks(t_philo *philo);
+void				ft_init_forks_right(t_data *data);
 
 #endif

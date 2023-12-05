@@ -41,7 +41,7 @@ void	ft_malloc_init_struct_data(char **argv, t_data *data)
 	data->start_time = ft_get_time();
 	data->finish_program = 0;
 
-	printf("data->start_time = %llu\n", data->start_time);
+	printf("data->start_time = %lu\n", data->start_time);
 }
 
 /**

@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/04 17:41:01 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/07 08:01:22 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,13 @@ enum	e_bool
 	TRUE
 };
 
+enum	e_table
+{
+	TABLE,
+	LEFT_HAND,
+	RIGHT_HAND	
+};
+
 /* ------- PROTOTYPES ------- */
 typedef struct s_philo t_philo;
 typedef struct s_data t_data;
@@ -100,7 +107,7 @@ int					ft_atoi_philo(const char *str);
 int					ft_print_error(char *str);
 void				ft_malloc_init_struct_data(char **argv, t_data *data);
 void				ft_init_elems_and_create_threads(char **argv, t_data *data);
-void				ft_init_mutex(t_data *data, int i);
+void				ft_init_mutex(t_data *data);
 void				ft_init_philo(char **argv, t_data *data, int i);
 void				ft_print_status(t_philo *philo, char *action);
 uint64_t			ft_get_time(void);

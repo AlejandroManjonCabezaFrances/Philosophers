@@ -38,7 +38,7 @@ void	ft_malloc_init_struct_data(char **argv, t_data *data)
 	data->start_time = ft_get_time();
 	data->finish_program = 0;
 
-	printf("data->start_time = %lu\n", data->start_time);
+	printf("data->start_time = %llu\n", data->start_time);
 }
 
 /**
@@ -154,7 +154,7 @@ void	ft_philo_eat(t_philo *philo)
 		//pthread_mutex_unlock(philo->data->print_mutex);	// 1 -> entrada función
 		ft_take_forks(philo);
 		pthread_mutex_lock(philo->data->lock);
-		ft_eating(philo);
+		// ft_eating(philo);
 		/* philo->last_meal = ft_get_time() - philo->data->start_time;
 		ft_print_status(philo, EAT); */
 		pthread_mutex_unlock(philo->data->lock);

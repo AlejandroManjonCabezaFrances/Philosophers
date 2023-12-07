@@ -48,7 +48,7 @@ void	ft_malloc_init_struct_data(char **argv, t_data *data)
  * @param	t_data *data
  * @return	void
 */
-void	ft_init_forks_right(t_data *data)
+void	ft_init_forks_right(t_data *data, t_philo *philo)
 {
 	int i;
 	int pos_philo;
@@ -60,12 +60,19 @@ void	ft_init_forks_right(t_data *data)
 			pos_philo = 0;
 		else
 			pos_philo = i + 1;
-		data->philos[i].right_fork = &data->philos[pos_philo].left_fork;
-		data->philos[i].r_fork = &data->philos[pos_philo].l_fork;
+		
+
+		philo[i].right_fork = &philo[pos_philo].left_fork;
+		// printf("----------------------------------------------------------------------------\n");
+		// printf("philos[i].right_fork = %p\n\n", philo[i].right_fork);
+		// printf("&philo[pos_philo].left_fork = %p\n\n\n\n", &philo[pos_philo].left_fork);
+		philo[i].r_fork = &philo[pos_philo].l_fork;
+
+		// printf("philo[i].r_fork = %p\n\n", philo[i].r_fork);
+		// printf("&philo[pos_philo].l_fork = %p\n\n\n\n", &philo[pos_philo].l_fork);
+		// printf("----------------------------------------------------------------------------\n");
 		i++;
 	}
-	printf("philo->l_fork_1 = %p\n", &data->philos->l_fork);
-	printf("philo->r_fork_1 = %p\n", data->philos->r_fork);
 }
 
 /**
@@ -75,7 +82,7 @@ void	ft_init_forks_right(t_data *data)
  * @param	void
  * @return	void
 */
-void	ft_init_mutex(t_data *data)
+void	ft_init_mutex(t_data *data, t_philo *philo)
 {
 	int i;
 
@@ -90,7 +97,7 @@ void	ft_init_mutex(t_data *data)
 			ft_print_error("error init mutex");
 		i++;
 	}
-	ft_init_forks_right(data);
+	ft_init_forks_right(data, philo);
 }
 
 void	ft_init_philo(char **argv, t_data *data, int i)
@@ -107,21 +114,33 @@ void	ft_init_philo(char **argv, t_data *data, int i)
 	data->philos[i].data = data;
 	data->philos[i].left_fork = 0;
 	data->philos[i].right_fork = NULL;
-	/* data->philos[i].r_fork = NULL; */
+	// data->philos[i].r_fork = NULL;
 }
 
 void	ft_take_forks(t_philo *philo)
 {
+	// printf("----------------------------------------------------------------------------\n");
+	 	printf("int = %p (%d)\n", (philo)->right_fork, philo->id);
+	// 	printf("philo->right_fork = %p\n\n", philo->right_fork);
+	// 	printf("&philo->left_fork = %p\n\n\n\n", &philo->left_fork);
+
+	// 	printf("philo->r_fork = %p\n\n", philo->r_fork);
+	// 	printf("&philo->l_fork = %p\n\n\n\n", &philo->l_fork);
+	// 	printf("----------------------------------------------------------------------------\n");
 	pthread_mutex_lock(&philo->l_fork);			// prueba Ángel
 	if (philo->left_fork == TABLE)
 	{
 		philo->left_fork = LEFT_HAND;
 		ft_print_status(philo, TAKE_LEFT_FORK);
+		printf("hola\n\n");
 	}
-	pthread_mutex_lock(philo->r_fork);			// prueba Ángel
-	if (philo->right_fork == TABLE)
+	printf("hola____2\n\n");
+	// pthread_mutex_lock(philo->r_fork);			// prueba Ángel
+	printf("hola____3\n\n");
+	if (*philo->right_fork == /* (int *) */TABLE)
 	{
-		philo->right_fork = (int *)RIGHT_HAND;
+		printf("hola____4\n\n");
+		*philo->right_fork = RIGHT_HAND;
 		ft_print_status(philo, TAKE_RIGHT_FORK);
 	}
 }
@@ -136,6 +155,14 @@ void	ft_drop_forks(t_philo *philo)
 
 void	ft_eating(t_philo *philo)
 {
+	// if (philo != NULL && philo->right_fork != NULL)
+	// {
+	// 	printf("ENTRA EN ESTE IF ()\n");
+    // 	printf("data->philos[i].right_fork = %d\n", *philo->right_fork);
+	// }
+	// else 
+    // 	printf("Error: philo or philo->right_fork is NULL\n");
+
 	printf("eating_____________________1\n");
 	if (philo->left_fork == LEFT_HAND && *philo->right_fork == RIGHT_HAND)
 	{
@@ -154,7 +181,7 @@ void	ft_philo_eat(t_philo *philo)
 		//pthread_mutex_unlock(philo->data->print_mutex);	// 1 -> entrada función
 		ft_take_forks(philo);
 		pthread_mutex_lock(philo->data->lock);
-		// ft_eating(philo);
+		ft_eating(philo);
 		/* philo->last_meal = ft_get_time() - philo->data->start_time;
 		ft_print_status(philo, EAT); */
 		pthread_mutex_unlock(philo->data->lock);
@@ -169,7 +196,7 @@ void	*ft_routine(void *philo_struct)
 {
 	t_philo *philo;
 
-	philo = philo_struct;
+	philo = (t_philo *)philo_struct;
 	if (philo->id % 2 == 0)
 		ft_usleep(50);		// 200
 	//pthread_mutex_lock(philo->data->print_mutex);		// 1 -> entrada función
@@ -184,33 +211,34 @@ void	*ft_routine(void *philo_struct)
  * @param	void
  * @return	void
 */
-void	ft_init_elems_and_create_threads(char **argv, t_data *data)
+void	ft_init_elems_and_create_threads(char **argv, t_data *data, t_philo *philo)
 {
 	int i;
 
 	i = 0;
-	ft_init_mutex(data);						// 2 mutex no bucle y 1 si bucle
-	while (i < data->n_philos)
+	ft_init_mutex(data, philo);						// 2 mutex no bucle y 1 si bucle 
+	while (i < data->n_philos)		//HAY QUE METER INICIALIZACION DE PHILOS O MUTEX EN BUCLE -----> NICO*************************
 	{
-		ft_init_philo(argv, data, i);			// si bucle
-		pthread_create(&(data->thread[i]), NULL, ft_routine, &(data->philos[i]));		// si bucle
+		ft_init_philo(argv, data, i);			// si bucle <<- ERROR
+		pthread_create(&(data->thread[i]), NULL, &ft_routine, &(data->philos[i]));		// si bucle
 		i++;
 	}
 }
 
 int main(int argc, char **argv)
 {
-	// t_philo	philos;
+	t_philo	philo;	// new
 	t_data	data;
 	//int 	i;
 
+	printf("Comienzo\n\n\n");
 	if (argc < 5 || argc > 6)
 		ft_print_error("Numbers of arguments invaled");
 	ft_malloc_init_struct_data(argv, &data);
 	if (data.n_philos >= 1 && data.n_philos <= 200)
 	{
 		//pthread_mutex_lock(data.print_mutex);		// probando
-		ft_init_elems_and_create_threads(argv, &data);
+		ft_init_elems_and_create_threads(argv, &data, &philo);
 		//pthread_mutex_unlock(data.print_mutex);		// probando
 	}
 	pthread_join(*data.thread, NULL);		// Evita esto --> WARNING: ThreadSanitizer: thread leak (pid=31890)

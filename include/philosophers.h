@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/07 08:01:22 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/07 11:38:55 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ enum	e_bool
 	TRUE
 };
 
-enum	e_table
+enum	e_status_table
 {
 	TABLE,
 	LEFT_HAND,
@@ -106,8 +106,8 @@ int					main(int argc, char **argv);
 int					ft_atoi_philo(const char *str);
 int					ft_print_error(char *str);
 void				ft_malloc_init_struct_data(char **argv, t_data *data);
-void				ft_init_elems_and_create_threads(char **argv, t_data *data);
-void				ft_init_mutex(t_data *data);
+void				ft_init_elems_and_create_threads(char **argv, t_data *data, t_philo *philo);
+void				ft_init_mutex(t_data *data, t_philo *philo);
 void				ft_init_philo(char **argv, t_data *data, int i);
 void				ft_print_status(t_philo *philo, char *action);
 uint64_t			ft_get_time(void);
@@ -115,6 +115,6 @@ void				*ft_routine(void *philo_struct);
 int					ft_usleep(unsigned int our_time);
 void				ft_take_forks(t_philo *philo);
 void				ft_drop_forks(t_philo *philo);
-void				ft_init_forks_right(t_data *data);
+void				ft_init_forks_right(t_data *data, t_philo *philo);
 
 #endif

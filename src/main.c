@@ -29,9 +29,6 @@ void	ft_malloc_init_struct_data(char **argv, t_data *data)
 	data->thread = malloc(sizeof(pthread_t) * data->n_philos);
 	if (!data->thread)
 		ft_print_error("error malloc");
-	// data->forks = malloc(sizeof(pthread_mutex_t) * data->n_philos);
-	// if (!data->forks)
-	// 	ft_print_error("error malloc");
 	data->lock = malloc(sizeof(pthread_mutex_t) * data->n_philos);
 	if (!data->lock)
 		ft_print_error("error malloc");
@@ -41,7 +38,7 @@ void	ft_malloc_init_struct_data(char **argv, t_data *data)
 	data->start_time = ft_get_time();
 	data->finish_program = 0;
 
-	printf("data->start_time = %llu\n", data->start_time);
+	printf("data->start_time = %lu\n", data->start_time);
 }
 
 /**
@@ -67,6 +64,8 @@ void	ft_init_forks_right(t_data *data)
 		data->philos[i].r_fork = &data->philos[pos_philo].l_fork;
 		i++;
 	}
+	printf("philo->l_fork_1 = %p\n", &data->philos->l_fork);
+	printf("philo->r_fork_1 = %p\n", data->philos->r_fork);
 }
 
 /**
@@ -76,33 +75,22 @@ void	ft_init_forks_right(t_data *data)
  * @param	void
  * @return	void
 */
-void	ft_init_mutex(t_data *data, int i)
+void	ft_init_mutex(t_data *data)
 {
+	int i;
+
+	i = 0;
 	if (pthread_mutex_init(data->lock, NULL) != 0)		// if (pthread_mutex_init(&(data->lock[i]), NULL) != 0)
 		ft_print_error("error init mutex");
-	// data->philos[i].lock = &(data->lock[i]);  				//	mutex no necesarios para cada philo 
 	if (pthread_mutex_init(data->print_mutex, NULL) != 0)	// if (pthread_mutex_init(&(data->print_mutex[i]), NULL) != 0)
 		ft_print_error("error init mutex");
-	// data->philos[i].print_mutex = &(data->print_mutex[i]);	//	mutex no necesarios para cada philo 
-	// if (pthread_mutex_init(&(data->forks[i]), NULL) != 0)	//	mutex forks no necesario en struct data
-	// 	ft_print_error("error init mutex");
-	if (pthread_mutex_init(&(data->philos[i].l_fork), NULL) != 0)
-		ft_print_error("error init mutex");
+	while (i < data->n_philos)
+	{
+		if (pthread_mutex_init(&(data->philos[i].l_fork), NULL) != 0)
+			ft_print_error("error init mutex");
+		i++;
+	}
 	ft_init_forks_right(data);
-
-
-
-	// PARTE COMÚN
-	// data->philos[i].right_fork = &data->forks[i];
-
-	// PRIMERA OPCIÓN
-	// data->philos[i].left_fork = &data->forks[(i + 1) % data->n_philos];
-
-	// SEGUNDA OPCIÓN
-	// if (i == (data->n_philos - 1))
-	// 	data->philos[i].left_fork = &data->forks[0];
-	// else
-	// 	data->philos[i].left_fork = &data->forks[i + 1];
 }
 
 void	ft_init_philo(char **argv, t_data *data, int i)
@@ -119,39 +107,61 @@ void	ft_init_philo(char **argv, t_data *data, int i)
 	data->philos[i].data = data;
 	data->philos[i].left_fork = 0;
 	data->philos[i].right_fork = NULL;
-	data->philos[i].r_fork = NULL;
+	/* data->philos[i].r_fork = NULL; */
 }
 
 void	ft_take_forks(t_philo *philo)
 {
-	// pthread_mutex_lock(philo->r_fork);		// prueba Ángel
-	ft_print_status(philo, TAKE_RIGHT_FORK);
-	// pthread_mutex_lock(&philo->l_fork);		// prueba Ángel
-	ft_print_status(philo, TAKE_LEFT_FORK);
+	pthread_mutex_lock(&philo->l_fork);			// prueba Ángel
+	if (philo->left_fork == TABLE)
+	{
+		philo->left_fork = LEFT_HAND;
+		ft_print_status(philo, TAKE_LEFT_FORK);
+	}
+	pthread_mutex_lock(philo->r_fork);			// prueba Ángel
+	if (philo->right_fork == TABLE)
+	{
+		philo->right_fork = (int *)RIGHT_HAND;
+		ft_print_status(philo, TAKE_RIGHT_FORK);
+	}
 }
 
 void	ft_drop_forks(t_philo *philo)
 {
-	// pthread_mutex_unlock(philo->r_fork);		// prueba Ángel
-	// pthread_mutex_unlock(&philo->l_fork);	// prueba Ángel
+	pthread_mutex_unlock(&philo->l_fork);		// prueba Ángel
+	pthread_mutex_unlock(philo->r_fork);		// prueba Ángel
 	ft_print_status(philo, SLEEP);
 	ft_usleep(philo->data->time_to_sleep);
+}
+
+void	ft_eating(t_philo *philo)
+{
+	printf("eating_____________________1\n");
+	if (philo->left_fork == LEFT_HAND && *philo->right_fork == RIGHT_HAND)
+	{
+		printf("eating_____________________2\n");
+		philo->last_meal = ft_get_time() - philo->data->start_time;
+		printf("eating_____________________3\n");
+		ft_print_status(philo, EAT);
+		printf("eating_____________________4\n");
+	}
 }
 
 void	ft_philo_eat(t_philo *philo)
 {
 	while (philo->data->finish_program == 0)
 	{
-		// pthread_mutex_unlock(philo->data->print_mutex);	// 1 -> entrada función
+		//pthread_mutex_unlock(philo->data->print_mutex);	// 1 -> entrada función
 		ft_take_forks(philo);
 		pthread_mutex_lock(philo->data->lock);
-		philo->last_meal = ft_get_time() - philo->data->start_time;
-		ft_print_status(philo, EAT);
+		ft_eating(philo);
+		/* philo->last_meal = ft_get_time() - philo->data->start_time;
+		ft_print_status(philo, EAT); */
 		pthread_mutex_unlock(philo->data->lock);
 		ft_usleep(philo->data->time_to_eat);
 		ft_drop_forks(philo);
 		ft_print_status(philo, THINK);
-		// pthread_mutex_lock(philo->data->print_mutex);	// 2 -> salida función
+		//pthread_mutex_lock(philo->data->print_mutex);	// 2 -> salida función
 	}
 }
 
@@ -161,10 +171,10 @@ void	*ft_routine(void *philo_struct)
 
 	philo = philo_struct;
 	if (philo->id % 2 == 0)
-		ft_usleep(200);
-	// pthread_mutex_lock(philo->data->print_mutex);		// 1 -> entrada función
+		ft_usleep(50);		// 200
+	//pthread_mutex_lock(philo->data->print_mutex);		// 1 -> entrada función
 	ft_philo_eat(philo);
-	// pthread_mutex_unlock(philo->data->print_mutex);	// 2 -> salida función
+	//pthread_mutex_unlock(philo->data->print_mutex);	// 2 -> salida función
 	return (NULL);
 }
 
@@ -179,7 +189,7 @@ void	ft_init_elems_and_create_threads(char **argv, t_data *data)
 	int i;
 
 	i = 0;
-	ft_init_mutex(data, i);						// 2 mutex no bucle y 1 si bucle
+	ft_init_mutex(data);						// 2 mutex no bucle y 1 si bucle
 	while (i < data->n_philos)
 	{
 		ft_init_philo(argv, data, i);			// si bucle
@@ -192,26 +202,26 @@ int main(int argc, char **argv)
 {
 	// t_philo	philos;
 	t_data	data;
-	// int 	i;
+	//int 	i;
 
 	if (argc < 5 || argc > 6)
 		ft_print_error("Numbers of arguments invaled");
 	ft_malloc_init_struct_data(argv, &data);
 	if (data.n_philos >= 1 && data.n_philos <= 200)
 	{
-		pthread_mutex_lock(data.print_mutex);		// probando
+		//pthread_mutex_lock(data.print_mutex);		// probando
 		ft_init_elems_and_create_threads(argv, &data);
-		pthread_mutex_unlock(data.print_mutex);		// probando
+		//pthread_mutex_unlock(data.print_mutex);		// probando
 	}
 	pthread_join(*data.thread, NULL);		// Evita esto --> WARNING: ThreadSanitizer: thread leak (pid=31890)
-	// i = 0;
-	// while (i < data.n_philos)					// Evita SEGV 112
-	// {
-	// 	pthread_join(data.thread[i], NULL);		// solo pasa una vez por el bucle
-	// 	i++;
+	//i = 0;
+	//while (i < data.n_philos)					// Evita SEGV 112
+	//{
+	//pthread_join(data.thread[i], NULL);		// solo pasa una vez por el bucle
+	//i++;
 	// 	// printf("data.n_philos = %d\n", data.n_philos);
 	// 	// printf("i = %d\n", i);
-	// }
+	//}
 	printf("llega aqui******______________\n");
 	return (0);
 }

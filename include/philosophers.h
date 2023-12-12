@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/07 11:38:55 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/12 19:41:39 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@
 
 /* ------- MACROS ------- */
 # define PATH_FD		"/Users/amanjon-/Desktop/philosophers_github/file.txt"
-/* # define FALSE 		0
-# define TRUE		1 */
+# define START_I
 
 /* ------- EMOJIS ------- */
 # define	EAT			"is eating 🍉"
@@ -78,8 +77,7 @@ typedef struct s_philo
 	int					*right_fork;
 	pthread_mutex_t		l_fork;			// se inicializa
 	pthread_mutex_t		*r_fork;		// no se inicializa
-	// pthread_mutex_t		*print_mutex;
-	// pthread_mutex_t		*lock;
+	pthread_t			thread;
 	t_data				*data;
 }	t_philo;
 
@@ -92,8 +90,6 @@ typedef struct s_data
 	int					n_times_to_eat;
 	int					finish_program;
 	uint64_t			start_time;
-	pthread_t			*thread;
-	// pthread_mutex_t		*forks;
 	pthread_mutex_t		*print_mutex;
 	pthread_mutex_t		*lock;
 	t_philo				*philos;			//check por si puedo quitarlo
@@ -101,20 +97,31 @@ typedef struct s_data
 
 /*---------- OPERATORS ----------*/
 
-/* ----------------- FUNCTION MINISHELL----------------- */
+/* ----------------- FUNCTION PHILO----------------- */
 int					main(int argc, char **argv);
-int					ft_atoi_philo(const char *str);
+void				ft_parse(int argc, char **argv, t_data *data);
+void				ft_init_mutex_philos_forks_threads(t_philo *philo, t_data *data, int i);
+void				ft_init_mutex(t_data *data, t_philo *philo, int i);
+void				ft_init_forks_right(int n_philos, t_philo *philo, int i);
+void				ft_init_threads(t_philo *philo, int i);
+
+/*---------- NO CHECKS ----------*/
 int					ft_print_error(char *str);
-void				ft_malloc_init_struct_data(char **argv, t_data *data);
-void				ft_init_elems_and_create_threads(char **argv, t_data *data, t_philo *philo);
-void				ft_init_mutex(t_data *data, t_philo *philo);
-void				ft_init_philo(char **argv, t_data *data, int i);
+int					ft_atoi_philo(const char *str);
 void				ft_print_status(t_philo *philo, char *action);
 uint64_t			ft_get_time(void);
-void				*ft_routine(void *philo_struct);
 int					ft_usleep(unsigned int our_time);
-void				ft_take_forks(t_philo *philo);
-void				ft_drop_forks(t_philo *philo);
-void				ft_init_forks_right(t_data *data, t_philo *philo);
+
+
+
+
+
+
+
+
+
+// void				*ft_routine(void *philo_struct);
+// void				ft_take_forks(t_philo *philo);
+// void				ft_drop_forks(t_philo *philo);
 
 #endif

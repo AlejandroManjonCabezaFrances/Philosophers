@@ -63,14 +63,7 @@ void	ft_init_forks_right(t_data *data, t_philo *philo)
 		
 
 		philo[i].right_fork = &philo[pos_philo].left_fork;
-		// printf("----------------------------------------------------------------------------\n");
-		// printf("philos[i].right_fork = %p\n\n", philo[i].right_fork);
-		// printf("&philo[pos_philo].left_fork = %p\n\n\n\n", &philo[pos_philo].left_fork);
 		philo[i].r_fork = &philo[pos_philo].l_fork;
-
-		// printf("philo[i].r_fork = %p\n\n", philo[i].r_fork);
-		// printf("&philo[pos_philo].l_fork = %p\n\n\n\n", &philo[pos_philo].l_fork);
-		// printf("----------------------------------------------------------------------------\n");
 		i++;
 	}
 }
@@ -119,27 +112,15 @@ void	ft_init_philo(char **argv, t_data *data, int i)
 
 void	ft_take_forks(t_philo *philo)
 {
-	// printf("----------------------------------------------------------------------------\n");
-	 	printf("int = %p (%d)\n", (philo)->right_fork, philo->id);
-	// 	printf("philo->right_fork = %p\n\n", philo->right_fork);
-	// 	printf("&philo->left_fork = %p\n\n\n\n", &philo->left_fork);
-
-	// 	printf("philo->r_fork = %p\n\n", philo->r_fork);
-	// 	printf("&philo->l_fork = %p\n\n\n\n", &philo->l_fork);
-	// 	printf("----------------------------------------------------------------------------\n");
 	pthread_mutex_lock(&philo->l_fork);			// prueba Ángel
 	if (philo->left_fork == TABLE)
 	{
 		philo->left_fork = LEFT_HAND;
 		ft_print_status(philo, TAKE_LEFT_FORK);
-		printf("hola\n\n");
 	}
-	printf("hola____2\n\n");
 	// pthread_mutex_lock(philo->r_fork);			// prueba Ángel
-	printf("hola____3\n\n");
 	if (*philo->right_fork == /* (int *) */TABLE)
 	{
-		printf("hola____4\n\n");
 		*philo->right_fork = RIGHT_HAND;
 		ft_print_status(philo, TAKE_RIGHT_FORK);
 	}
@@ -155,22 +136,10 @@ void	ft_drop_forks(t_philo *philo)
 
 void	ft_eating(t_philo *philo)
 {
-	// if (philo != NULL && philo->right_fork != NULL)
-	// {
-	// 	printf("ENTRA EN ESTE IF ()\n");
-    // 	printf("data->philos[i].right_fork = %d\n", *philo->right_fork);
-	// }
-	// else 
-    // 	printf("Error: philo or philo->right_fork is NULL\n");
-
-	printf("eating_____________________1\n");
 	if (philo->left_fork == LEFT_HAND && *philo->right_fork == RIGHT_HAND)
 	{
-		printf("eating_____________________2\n");
 		philo->last_meal = ft_get_time() - philo->data->start_time;
-		printf("eating_____________________3\n");
 		ft_print_status(philo, EAT);
-		printf("eating_____________________4\n");
 	}
 }
 
@@ -216,11 +185,11 @@ void	ft_init_elems_and_create_threads(char **argv, t_data *data, t_philo *philo)
 	int i;
 
 	i = 0;
-	ft_init_mutex(data, philo);						// 2 mutex no bucle y 1 si bucle 
-	while (i < data->n_philos)		//HAY QUE METER INICIALIZACION DE PHILOS O MUTEX EN BUCLE -----> NICO*************************
+	ft_init_mutex(data, philo);
+	while (i < data->n_philos)
 	{
-		ft_init_philo(argv, data, i);			// si bucle <<- ERROR
-		pthread_create(&(data->thread[i]), NULL, &ft_routine, &(data->philos[i]));		// si bucle
+		ft_init_philo(argv, data, i);
+		pthread_create(&(data->thread[i]), NULL, &ft_routine, &(data->philos[i]));
 		i++;
 	}
 }
@@ -241,7 +210,7 @@ int main(int argc, char **argv)
 		ft_init_elems_and_create_threads(argv, &data, &philo);
 		//pthread_mutex_unlock(data.print_mutex);		// probando
 	}
-	pthread_join(*data.thread, NULL);		// Evita esto --> WARNING: ThreadSanitizer: thread leak (pid=31890)
+	// pthread_join(*data.thread, NULL);		// Evita esto --> WARNING: ThreadSanitizer: thread leak (pid=31890)
 	//i = 0;
 	//while (i < data.n_philos)					// Evita SEGV 112
 	//{

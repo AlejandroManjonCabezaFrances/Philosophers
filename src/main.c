@@ -108,7 +108,15 @@
 
 
 
+void	*ft_routine(void *philo_struct)
+{
+	t_philo *philo;
 
+	philo = (t_philo *)philo_struct;
+	
+	// ft_philo_eat(philo);
+	return (0);
+}
 
 /**
  * int pthread_create(pthread_t *thread, const pthread_attr_t *attr,void *(*start_routine) (void *), void *arg);
@@ -134,18 +142,29 @@ void	ft_init_threads(t_philo *philo, int i)
  * @param	void
  * @return	void
 */
-void	ft_init_mutex(t_data *data, t_philo *philo, int i)
+int	ft_init_mutex(t_data *data, t_philo *philo, int i)
 {
-	if (pthread_mutex_init(data->lock, NULL) != 0)		// if (pthread_mutex_init(&(data->lock[i]), NULL) != 0)
-		ft_print_error("error init mutex");
-	if (pthread_mutex_init(data->print_mutex, NULL) != 0)	// if (pthread_mutex_init(&(data->print_mutex[i]), NULL) != 0)
-		ft_print_error("error init mutex");
+	i = 0;
+	if (pthread_mutex_init(&data->lock, NULL) != 0)
+	{
+		printf("error init mutex: lock");
+		return (1);
+	}
+	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
+	{
+		printf("error init mutex: print_mutex");
+		return (1);
+	}
 	while (i < data->n_philos)
 	{
 		if (pthread_mutex_init(&philo[i].l_fork, NULL) != 0)
-			ft_print_error("error init mutex");
+		{
+			printf("error init mutex: l_fork");
+			return (1);
+		}
 		i++;
 	}
+	return (0);
 }
 
 /**
@@ -185,11 +204,15 @@ void	ft_init_mutex_philos_forks_threads(t_philo *philo, t_data *data, int i)
 		i++;
 	}
 	ft_init_forks_right(data->n_philos, philo, START_I);
+	i = START_I;
 	ft_init_threads(philo, START_I);
 }
 
-void	ft_parse(int argc, char **argv, t_data *data)
+void	ft_parse_and_init_struct_data(int argc, char **argv, t_data *data)
 {
+	argc = 0;
+
+	data->n_philos = ft_atoi_philo(argv[1]);
 	data->time_to_die = ft_atoi_philo(argv[2]);
 	data->time_to_eat = ft_atoi_philo(argv[3]);
 	data->time_to_sleep = ft_atoi_philo(argv[4]);
@@ -205,30 +228,52 @@ int main(int argc, char **argv)
 {
 	t_data	data;
 	t_philo	*philo;
-	//int 	i;
+	int i;
 
 	if (argc < 5 || argc > 6)
 		ft_print_error("Numbers of arguments invaled");
-	ft_parse(argc, argv, &data);
-	if (data.n_philos >= 1 && data.n_philos <= 200)
-		ft_init_elems_and_create_threads(argv, &data, &philo);
+	ft_parse_and_init_struct_data(argc, argv, &data);
 	philo = NULL;
-	philo = malloc(sizeeof(t_philo) * data.n_philos);
+	philo = (t_philo *)malloc(sizeof(t_philo) * data.n_philos);
 	if (philo == NULL)
 	{
 		ft_print_error("error malloc");
 		return (1);
 	}
-	ft_init_mutex_philos_forks_threads(philo, &data, START_I);
+	if (data.n_philos >= 1 && data.n_philos <= 200)
+		ft_init_mutex_philos_forks_threads(philo, &data, START_I);
+	else	
+		printf("Number of philosopher's is too many or 0");
 	// pthread_join(*data.thread, NULL);
-	//i = 0;
-	//while (i < data.n_philos)
-	//{
-	//pthread_join(data.thread[i], NULL);
-	//i++;
-	// 	// printf("data.n_philos = %d\n", data.n_philos);
-	// 	// printf("i = %d\n", i);
-	//}
+	i = 0;
+	while (i < data.n_philos)
+	{
+		pthread_join(philo[i].thread, NULL);
+		i++;
+		// printf("data.n_philos = %d\n", data.n_philos);
+		// printf("i = %d\n", i);
+	}
+	
+	// if (pthread_mutex_destroy(&data.lock) != 0)
+	// {
+    //     perror("Error al destruir el mutex");
+    //     return 1; // Manejo de error
+	// }
+	// if (pthread_mutex_destroy(&data.print_mutex) != 0)
+	// {
+    // 	perror("Error al destruir el mutex");
+    //     return 1; // Manejo de error
+	// }
+	// i = 0;
+	// while (i < data.n_philos)
+	// {
+	// 	if (pthread_mutex_destroy(&data.philos[i].l_fork) != 0)
+	//   	{
+    // 		perror("Error al destruir el mutex");
+    // 		return 1; // Manejo de error
+	//   	}
+	// 	i++;
+	// }
 	printf("fin programa\n");
 	return (0);
 }

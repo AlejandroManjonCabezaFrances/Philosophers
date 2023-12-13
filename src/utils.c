@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/07 08:00:38 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/13 16:19:37 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ void	ft_print_status(t_philo *philo, char *action)
 {
 	uint64_t	time;
 
-	pthread_mutex_lock(philo->data->print_mutex);
+	pthread_mutex_lock(&philo->data->print_mutex);
 	time = (ft_get_time() - philo->data->start_time);
 	// printf("time = %llu\n", time);
 	if (philo->data->finish_program == 0)
 		printf("time:%llums | philo:%d | action: %s\n", time, philo->id, action);
-	pthread_mutex_unlock(philo->data->print_mutex);
+	pthread_mutex_unlock(&philo->data->print_mutex);
 }
 
 /**

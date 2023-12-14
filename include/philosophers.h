@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/13 16:40:37 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/14 11:42:12 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,15 @@ typedef struct s_data
 
 /* ----------------- FUNCTION PHILO----------------- */
 int					main(int argc, char **argv);
-void				ft_parse_and_init_struct_data(int argc, char **argv, t_data *data);
+void				ft_parse_and_init_struct_data(/* int argc, */ char **argv, t_data *data);
 void				ft_init_mutex_philos_forks_threads(t_philo *philo, t_data *data, int i);
 int					ft_init_mutex(t_data *data, t_philo *philo, int i);
 void				ft_init_forks_right(int n_philos, t_philo *philo, int i);
 void				ft_init_threads(t_philo *philo, int i);
 void				*ft_routine(void *philo_struct);
+void				ft_take_forks_and_eat(t_philo *philo);
+void				ft_drop_forks(t_philo *philo);
+void				ft_sleep_and_think(t_philo *philo);
 
 /*---------- NO CHECKS ----------*/
 int					ft_print_error(char *str);

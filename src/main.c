@@ -13,11 +13,6 @@
 
 #include "../include/philosophers.h"
 
-
-
-
-
-
 // void	ft_init_philo(char **argv, t_data *data, int i)
 // {
 // 	data->time_to_die = ft_atoi_philo(argv[2]);
@@ -106,14 +101,61 @@
 
 
 
+void	ft_take_forks_and_eat(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->l_fork);
+	if (philo->left_fork == TABLE)
+	{
+		philo->left_fork = LEFT_HAND;
+		ft_print_status(philo, TAKE_LEFT_FORK);
+	}
+	if (philo->data->n_philos > 1)
+	{
+		pthread_mutex_lock(philo->r_fork);
+		if (*philo->right_fork == TABLE)
+		{
+			*philo->right_fork = RIGHT_HAND;
+			ft_print_status(philo, TAKE_RIGHT_FORK);
+		}
+		if (philo->left_fork == LEFT_HAND && *philo->right_fork == RIGHT_HAND)
+		{
+			philo->last_meal = ft_get_time();
+			ft_print_status(philo, EAT);
+			ft_usleep(philo->data->time_to_eat);
+		}
+		pthread_mutex_unlock(philo->r_fork);
+	}
+	pthread_mutex_unlock(&philo->l_fork);
+}
 
+void	ft_drop_forks(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->l_fork);
+	philo->left_fork = TABLE;
+	pthread_mutex_unlock(&philo->l_fork);
+	pthread_mutex_lock(philo->r_fork);
+	*philo->right_fork = TABLE;
+	pthread_mutex_unlock(philo->r_fork);
+}
+
+void	ft_sleep_and_think(t_philo *philo)
+{
+	ft_print_status(philo, SLEEP);
+	ft_usleep(philo->data->time_to_sleep);
+	ft_print_status(philo, THINK);
+}
 
 void	*ft_routine(void *philo_struct)
 {
 	t_philo *philo;
 
 	philo = (t_philo *)philo_struct;
-	
+	while (philo->data->finish_program == 0)
+	{
+		ft_take_forks_and_eat(philo);
+		ft_drop_forks(philo);
+		ft_sleep_and_think(philo);
+	}
 	// ft_philo_eat(philo);
 	return (0);
 }
@@ -130,8 +172,16 @@ void	ft_init_threads(t_philo *philo, int i)
 	while (i < philo->data->n_philos)
 	{
 		if (pthread_create(&philo[i].thread, NULL, &ft_routine, &philo[i]) != 0)
-			ft_print_error("error creating thread\n");
-		i++;
+			ft_print_error("error creating even thread\n");
+		i = i + 2;
+	}
+	usleep(50);
+	i = 0;
+	while (i < philo->data->n_philos)
+	{
+		if (pthread_create(&philo[i].thread, NULL, &ft_routine, &philo[i]) != 0)
+			ft_print_error("error creating odd thread\n");
+		i = i + 2;
 	}
 }
 
@@ -192,7 +242,7 @@ void	ft_init_forks_right(int n_philos, t_philo *philo, int i)
 
 void	ft_init_mutex_philos_forks_threads(t_philo *philo, t_data *data, int i)
 {
-	ft_init_mutex(data, philo, START_I);
+	ft_init_mutex(data, philo, START_I);	// if()--> flujo return, evitando exit
 	while (i < data->n_philos)
 	{
 		philo[i].id = i + 1;
@@ -208,9 +258,9 @@ void	ft_init_mutex_philos_forks_threads(t_philo *philo, t_data *data, int i)
 	ft_init_threads(philo, START_I);
 }
 
-void	ft_parse_and_init_struct_data(int argc, char **argv, t_data *data)
+void	ft_parse_and_init_struct_data(/* int argc, */ char **argv, t_data *data)
 {
-	argc = 0;
+	/* argc = 0; */
 
 	data->n_philos = ft_atoi_philo(argv[1]);
 	data->time_to_die = ft_atoi_philo(argv[2]);
@@ -232,7 +282,7 @@ int main(int argc, char **argv)
 
 	if (argc < 5 || argc > 6)
 		ft_print_error("Numbers of arguments invaled");
-	ft_parse_and_init_struct_data(argc, argv, &data);
+	ft_parse_and_init_struct_data(/* argc, */ argv, &data);
 	philo = NULL;
 	philo = (t_philo *)malloc(sizeof(t_philo) * data.n_philos);
 	if (philo == NULL)

@@ -3,24 +3,24 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/17 09:03:02 by amanjon-          #+#    #+#              #
-#    Updated: 2023/12/13 12:34:56 by amanjon-         ###   ########.fr        #
+#    Updated: 2023/12/14 10:29:46 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror  -I /libft/ft_printf/include -I /libft/gnl/include -I /libft/Libft/include #-pthread
+CFLAGS = -Wall -Wextra -Werror  -I /libft/ft_printf/include -I /libft/gnl/include #-I /libft/Libft/include #-pthread
 #DEBUG = -g3 -fsanitize=address
 DEBUG = -g3 -fsanitize=thread
 RM = rm -f
 SRC = main.c utils.c
 #SRC = sandbox.c 
 
-LIBFT_DIR = libft/
-LIBFT = $(LIBFT_DIR)libft.a
+#LIBFT_DIR = libft/
+#LIBFT = $(LIBFT_DIR)libft.a
 
 SRC_DIR = ./src/
 OBJ_DIR = ./obj/

@@ -140,14 +140,17 @@ void	ft_sleep_and_think(t_philo *philo)
 	ft_print_status(philo, SLEEP);
 	ft_usleep(philo->data->time_to_sleep);
 	ft_print_status(philo, THINK);
+	printf("philo->count_meals = %d\n", philo->count_meals);
 	if (philo->count_meals > 0)
 		philo->count_meals--;
 }
 
-void	ft_death(t_philo *philo)
-{
-	pthread_mutex_lock();
-}
+// void	ft_death(t_philo *philo)
+// {
+// 	pthread_mutex_lock(&philo->data->kill_mutex);
+
+// 	pthread_mutex_unlock(&philo->data->kill_mutex);
+// }
 
 void	*ft_routine(void *philo_struct)
 {
@@ -159,8 +162,8 @@ void	*ft_routine(void *philo_struct)
 	while (philo->count_meals != 0 && philo->data->finish_program == 0)
 	{
 		time = ft_get_time();
-		if (time > philo->last_meal + philo->data->time_to_die)
-			ft_death(philo);
+		// if (time > philo->last_meal + philo->data->time_to_die)
+		// 	ft_death(philo);
 		ft_take_forks_and_eat(philo);
 		ft_drop_forks(philo);
 		ft_sleep_and_think(philo);
@@ -174,8 +177,10 @@ void	*ft_routine(void *philo_struct)
  * @param	void
  * @return	void
 */
-void	ft_init_threads(t_philo *philo, int i)
+void	ft_init_threads(t_philo *philo/* , int i */)
 {
+	int i;
+
 	i = 0;
 	while (i < philo->data->n_philos)
 	{
@@ -200,8 +205,10 @@ void	ft_init_threads(t_philo *philo, int i)
  * @param	void
  * @return	void
 */
-int	ft_init_mutex(t_data *data, t_philo *philo, int i)
+int	ft_init_mutex(t_data *data, t_philo *philo/* , int i */)
 {
+	int i;
+
 	i = 0;
 	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
 	{
@@ -232,10 +239,12 @@ int	ft_init_mutex(t_data *data, t_philo *philo, int i)
  * @param	t_data *data
  * @return	void
 */
-void	ft_init_forks_right(int n_philos, t_philo *philo, int i)
+void	ft_init_forks_right(int n_philos, t_philo *philo/* , int i */)
 {
 	int pos_philo;
+	int i;
 
+	i = 0;
 	while (i < n_philos)
 	{
 		if (i == n_philos - 1)
@@ -248,41 +257,50 @@ void	ft_init_forks_right(int n_philos, t_philo *philo, int i)
 	}
 }
 
-void	ft_init_mutex_philos_forks_threads(t_philo *philo, t_data *data, int i)
+void	ft_init_mutex_philos_forks_threads(int argc, t_philo *philo, t_data *data)
 {
-	ft_init_mutex(data, philo, START_I);	// if()--> flujo return, evitando exit
+	int i;
+
+	ft_init_mutex(data, philo);
+	i = 0;
 	while (i < data->n_philos)
 	{
 		philo[i].id = i + 1;
 		philo[i].last_meal = 0;
 		philo[i].data = data;
 		philo[i].left_fork = 0;
-		philo[i].count_meals = data->n_times_to_eat;
 		philo[i].right_fork = NULL;
 		philo[i].r_fork = NULL;
+		if (argc == 6)
+			philo[i].count_meals = data->n_times_to_eat;
+		else
+			philo[i].count_meals = -1;
 		i++;
 	}
-	ft_init_forks_right(data->n_philos, philo, START_I);
-	i = START_I;
-	ft_init_threads(philo, START_I);
+	ft_init_forks_right(data->n_philos, philo);
+	ft_init_threads(philo);
 }
 
 void	ft_parse_and_init_struct_data(int argc, char **argv, t_data *data)
 {
-	/* argc = 0; */
+	argc = 0;
 
 	data->n_philos = ft_atoi_philo(argv[1]);
 	data->time_to_die = ft_atoi_philo(argv[2]);
 	data->time_to_eat = ft_atoi_philo(argv[3]);
 	data->time_to_sleep = ft_atoi_philo(argv[4]);
-	// if (argv[5])
-	// 	data->n_times_to_eat = ft_atoi_philo(argv[5]);
-	// else
-	// 	data->n_times_to_eat = -1;
-		if (argc == 6)
+	if (argv[5])
 		data->n_times_to_eat = ft_atoi_philo(argv[5]);
+	// else						// NO HACE FALTA --> continue test
+	// {
+	// 	data->n_times_to_eat = -1;
+	// 	printf("entra___2\n");
+	// }
 	data->finish_program = 0;
 	data->start_time = ft_get_time();
+
+		// if (argc == 6)
+		// data->n_times_to_eat = ft_atoi_philo(argv[5]);
 }
 
 int main(int argc, char **argv)
@@ -291,6 +309,7 @@ int main(int argc, char **argv)
 	t_philo	*philo;
 	int i;
 
+	printf("Start program\n");
 	if (argc < 5 || argc > 6)
 		ft_print_error("Numbers of arguments invaled");
 	ft_parse_and_init_struct_data(argc, argv, &data);
@@ -302,7 +321,7 @@ int main(int argc, char **argv)
 		return (1);
 	}
 	if (data.n_philos >= 1 && data.n_philos <= 200)
-		ft_init_mutex_philos_forks_threads(philo, &data, START_I);
+		ft_init_mutex_philos_forks_threads(argc, philo, &data);
 	else	
 		printf("Number of philosopher's is too many or 0");
 	// pthread_join(*data.thread, NULL);

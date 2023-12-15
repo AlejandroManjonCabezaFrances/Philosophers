@@ -98,9 +98,6 @@
 
 
 
-
-
-
 void	ft_take_forks_and_eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->l_fork);
@@ -143,20 +140,31 @@ void	ft_sleep_and_think(t_philo *philo)
 	ft_print_status(philo, SLEEP);
 	ft_usleep(philo->data->time_to_sleep);
 	ft_print_status(philo, THINK);
+	if (philo->count_meals > 0)
+		philo->count_meals--;
+}
+
+void	ft_death(t_philo *philo)
+{
+	pthread_mutex_lock();
 }
 
 void	*ft_routine(void *philo_struct)
 {
-	t_philo *philo;
+	t_philo 	*philo;
+	uint64_t	time;
 
 	philo = (t_philo *)philo_struct;
-	while (philo->data->finish_program == 0)
+	philo->last_meal = ft_get_time();
+	while (philo->count_meals != 0 && philo->data->finish_program == 0)
 	{
+		time = ft_get_time();
+		if (time > philo->last_meal + philo->data->time_to_die)
+			ft_death(philo);
 		ft_take_forks_and_eat(philo);
 		ft_drop_forks(philo);
 		ft_sleep_and_think(philo);
 	}
-	// ft_philo_eat(philo);
 	return (0);
 }
 
@@ -176,7 +184,7 @@ void	ft_init_threads(t_philo *philo, int i)
 		i = i + 2;
 	}
 	usleep(50);
-	i = 0;
+	i = 1;
 	while (i < philo->data->n_philos)
 	{
 		if (pthread_create(&philo[i].thread, NULL, &ft_routine, &philo[i]) != 0)
@@ -195,14 +203,14 @@ void	ft_init_threads(t_philo *philo, int i)
 int	ft_init_mutex(t_data *data, t_philo *philo, int i)
 {
 	i = 0;
-	if (pthread_mutex_init(&data->lock, NULL) != 0)
-	{
-		printf("error init mutex: lock");
-		return (1);
-	}
 	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
 	{
 		printf("error init mutex: print_mutex");
+		return (1);
+	}
+	if (pthread_mutex_init(&data->kill_mutex, NULL) != 0)
+	{
+		printf("error init mutex: kill_mutex");
 		return (1);
 	}
 	while (i < data->n_philos)
@@ -249,6 +257,7 @@ void	ft_init_mutex_philos_forks_threads(t_philo *philo, t_data *data, int i)
 		philo[i].last_meal = 0;
 		philo[i].data = data;
 		philo[i].left_fork = 0;
+		philo[i].count_meals = data->n_times_to_eat;
 		philo[i].right_fork = NULL;
 		philo[i].r_fork = NULL;
 		i++;
@@ -258,7 +267,7 @@ void	ft_init_mutex_philos_forks_threads(t_philo *philo, t_data *data, int i)
 	ft_init_threads(philo, START_I);
 }
 
-void	ft_parse_and_init_struct_data(/* int argc, */ char **argv, t_data *data)
+void	ft_parse_and_init_struct_data(int argc, char **argv, t_data *data)
 {
 	/* argc = 0; */
 
@@ -266,10 +275,12 @@ void	ft_parse_and_init_struct_data(/* int argc, */ char **argv, t_data *data)
 	data->time_to_die = ft_atoi_philo(argv[2]);
 	data->time_to_eat = ft_atoi_philo(argv[3]);
 	data->time_to_sleep = ft_atoi_philo(argv[4]);
-	if (argv[5])
+	// if (argv[5])
+	// 	data->n_times_to_eat = ft_atoi_philo(argv[5]);
+	// else
+	// 	data->n_times_to_eat = -1;
+		if (argc == 6)
 		data->n_times_to_eat = ft_atoi_philo(argv[5]);
-	else
-		data->n_times_to_eat = -1;
 	data->finish_program = 0;
 	data->start_time = ft_get_time();
 }
@@ -282,7 +293,7 @@ int main(int argc, char **argv)
 
 	if (argc < 5 || argc > 6)
 		ft_print_error("Numbers of arguments invaled");
-	ft_parse_and_init_struct_data(/* argc, */ argv, &data);
+	ft_parse_and_init_struct_data(argc, argv, &data);
 	philo = NULL;
 	philo = (t_philo *)malloc(sizeof(t_philo) * data.n_philos);
 	if (philo == NULL)

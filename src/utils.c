@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/15 11:50:01 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/18 15:37:50 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@ void	ft_print_status(t_philo *philo, char *action)
 {
 	uint64_t	time;
 
-	pthread_mutex_lock(&philo->data->print_mutex);
 	time = (ft_get_time() - philo->data->start_time);
-	// printf("time = %llu\n", time);
+	
 	if (philo->data->finish_program == 0)
-		printf("time:%llums | philo:%d | action: %s\n", time, philo->id, action);
+	{
+	pthread_mutex_lock(&philo->data->print_mutex);
+	printf("time:%llums | philo:%d | action: %s\n", time, philo->id, action);
 	pthread_mutex_unlock(&philo->data->print_mutex);
+	}
 }
 
 /**
@@ -97,6 +99,8 @@ int	ft_atoi_philo(const char *str)
 		result = result * 10 + str[i] - '0';
 		i++;
 	}
+	if ((str[i] < '1' || str[i] > '9') && str[i])
+		ft_print_error("Invalid arguments: just numbers from 1 to 9");
 	if (result > INT_MAX)
 		ft_print_error("Invalid arguments: overflow INT");
 	return ((int)result);

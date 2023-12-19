@@ -6,13 +6,13 @@
 #    By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/17 09:03:02 by amanjon-          #+#    #+#              #
-#    Updated: 2023/12/19 12:20:39 by amanjon-         ###   ########.fr        #
+#    Updated: 2023/12/19 12:51:54 by amanjon-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror  -I /libft/ft_printf/include -I /libft/gnl/include #-I /libft/Libft/include #-pthread
+CFLAGS = -Wall -Wextra -Werror  -I /libft/ft_printf/include -I /libft/gnl/include #-pthread #-I /libft/Libft/include
 #DEBUG = -g3 -fsanitize=address
 DEBUG = -g3 -fsanitize=thread
 RM = rm -f

@@ -94,7 +94,7 @@ void	*ft_routine(void *philo_struct)
 			ft_drop_forks(philo);
 		else if (philo->status == SLEEPING 
 			&& time > philo->last_meal + philo->data->time_to_eat + philo->data->time_to_sleep)
-		ft_sleep_and_think(philo);
+			ft_sleep_and_think(philo);
 		ft_synchronization(philo);
 	}
 	return (0);
@@ -117,7 +117,7 @@ void	ft_init_threads(t_philo *philo/* , int i */)
 			ft_print_error("error creating even thread\n");
 		i = i + 2;
 	}
-	usleep(50);
+	usleep(25);
 	i = 1;
 	while (i < philo->data->n_philos)
 	{

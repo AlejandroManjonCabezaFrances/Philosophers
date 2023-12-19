@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:10:53 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/19 16:10:56 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/19 17:54:59 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	ft_death(t_philo *philo)
 	if (philo->data->finish_program == 0)
 	{
 		philo->data->finish_program = 1;
+		usleep(philo->data->pause);
 		pthread_mutex_lock(&philo->data->print_mutex);
 		time = philo->last_meal + philo->data->time_to_die;
 		printf("time:%llums | philo:%d | action: %s\n", time - philo->data->start_time, philo->id, DIE);
@@ -95,7 +96,7 @@ void	*ft_routine(void *philo_struct)
 		else if (philo->status == SLEEPING 
 			&& time > philo->last_meal + philo->data->time_to_eat + philo->data->time_to_sleep)
 			ft_sleep_and_think(philo);
-		// ft_synchronization(philo);
+		ft_synchronization(philo);
 	}
 	return (0);
 }

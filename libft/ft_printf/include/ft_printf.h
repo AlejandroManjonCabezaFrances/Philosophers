@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 13:27:38 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/16 08:13:27 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/04 09:14:45 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdarg.h>
 # include <string.h>
 # include <unistd.h>
-//# include <xlocale.h>
+# include <xlocale.h>
 # include <stdlib.h>
 # include "../../Libft/include/libft.h"
 

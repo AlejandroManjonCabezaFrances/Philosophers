@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/19 16:17:40 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/19 18:03:48 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,15 @@ uint64_t	ft_get_time(void)
  * @param	unsigned int our_time
  * @return	int
 */
-int	ft_usleep(unsigned int our_time)
-{
-	uint64_t	time;
+// int	ft_usleep(unsigned int our_time)
+// {
+// 	uint64_t	time;
 	
-	time = ft_get_time() + our_time;
-	while (ft_get_time() < time)
-		usleep(100);					// 100 microsegundos, 10 e-6 (0,000001 segundos)
-	return (0);
-}
+// 	time = ft_get_time() + our_time;
+// 	while (ft_get_time() < time)
+// 		usleep(100);					// 100 microsegundos, 10 e-6 (0,000001 segundos)
+// 	return (0);
+// }
 
 /**
  * Prints an error passed by arguments and exits the program
@@ -104,14 +104,14 @@ int	ft_atoi_philo(const char *str)
 	return ((int)result);
 }
 
-// void	ft_synchronization(t_philo *philo)
-// {
-// 	if (philo->status_changed)
-// 	{
-// 		usleep(philo->data->pause);
-// 		philo->status_changed = FALSE;
-// 	}
-// 	else
-// 		usleep(philo->data->min_pause);
-// }
+void	ft_synchronization(t_philo *philo)
+{
+	if (philo->status_changed)
+	{
+		usleep(philo->data->pause);
+		philo->status_changed = FALSE;
+	}
+	else
+		usleep(philo->data->min_pause);
+}
 

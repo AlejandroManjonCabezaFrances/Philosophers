@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/19 16:51:59 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/19 17:54:22 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,8 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-/* ---------------- PATH ---------------- */
-# include "../libft/Libft/include/libft.h"
-# include "../libft/ft_printf/include/ft_printf.h"
-# include "../libft/Gnl/include/get_next_line.h"
-
 /* ------- MACROS ------- */
 # define PATH_FD		"/Users/amanjon-/Desktop/philosophers_github/file.txt"
-# define START_I 		0
 
 /* ------- EMOJIS ------- */
 # define	EAT			"is eating 🍉"
@@ -120,5 +114,7 @@ void				ft_take_forks_and_eat(t_philo *philo, u_int64_t time);
 void				ft_init_philos(int argc, t_data *data, t_philo *philo);
 void				ft_parse_and_init_struct_data(char **argv, t_data *data);
 void				ft_print_status(t_philo *philo, char *action, uint64_t time);
+
+void				ft_synchronization(t_philo *philo);
 
 #endif

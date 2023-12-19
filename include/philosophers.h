@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/19 12:10:42 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/19 14:59:51 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void				ft_parse_and_init_struct_data(char **argv, t_data *data);
 void				ft_init_table(int argc, t_philo *philo, t_data *data);
 int					ft_init_mutex(t_data *data, t_philo *philo);
 void				ft_init_forks_right(int n_philos, t_philo *philo);
-void				ft_init_threads(t_philo *philo);
+int					ft_init_threads(t_philo *philo);
 void				*ft_routine(void *philo_struct);
 void				ft_take_forks_and_eat(t_philo *philo, u_int64_t time);
 void				ft_drop_forks(t_philo *philo);
@@ -115,25 +115,14 @@ void				ft_join_threads(t_data *data ,t_philo *philo);
 void				ft_destroy_threads(t_data *data ,t_philo *philo);
 void				ft_death(t_philo *philo);
 int					ft_stop_routine(t_data *data);
-void				ft_synchronization(t_philo *philo);
+// void				ft_synchronization(t_philo *philo);
 void				ft_init_philos(int argc, t_data *data, t_philo *philo);
 
 /*---------- NO CHECKS ----------*/
-int					ft_print_error(char *str);
+// int					ft_print_error(char *str);
 int					ft_atoi_philo(const char *str);
 void				ft_print_status(t_philo *philo, char *action, uint64_t time);
 uint64_t			ft_get_time(void);
 int					ft_usleep(unsigned int our_time);
-
-
-
-
-
-
-
-
-
-// void				ft_take_forks(t_philo *philo);
-// void				ft_drop_forks(t_philo *philo);
 
 #endif

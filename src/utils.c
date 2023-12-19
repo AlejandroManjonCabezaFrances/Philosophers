@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/19 12:52:14 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:17:40 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 */
 void	ft_print_status(t_philo *philo, char *action, uint64_t time)
 {
-	// time = (ft_get_time() - philo->data->start_time);
 	pthread_mutex_lock(&philo->data->aux_mutex);
 	if (philo->data->finish_program == 0)
 	{
@@ -28,17 +27,6 @@ void	ft_print_status(t_philo *philo, char *action, uint64_t time)
 		pthread_mutex_unlock(&philo->data->print_mutex);
 	}
 	pthread_mutex_unlock(&philo->data->aux_mutex);
-}
-
-/**
- * Prints an error passed by arguments and exits the program
- * @param	char *str
- * @return	int
-*/
-int	ft_print_error(char *str)
-{
-	printf("%s\n" ,str);
-	exit(EXIT_FAILURE);
 }
 
 /**
@@ -74,6 +62,17 @@ int	ft_usleep(unsigned int our_time)
 }
 
 /**
+ * Prints an error passed by arguments and exits the program
+ * @param	char *str
+ * @return	int
+*/
+int	ft_print_error(char *str)
+{
+	printf("%s\n" ,str);
+	exit(EXIT_FAILURE);
+}
+
+/**
  * Transform a char into an int if the number is positive and between 1 and 9
  * @param	const char *str
  * @return	int
@@ -105,23 +104,14 @@ int	ft_atoi_philo(const char *str)
 	return ((int)result);
 }
 
-void	ft_synchronization(t_philo *philo)
-{
-	if (philo->status_changed)
-	{
-		usleep(philo->data->pause);
-		philo->status_changed = FALSE;
-	}
-	else
-		usleep(philo->data->min_pause);
-}
+// void	ft_synchronization(t_philo *philo)
+// {
+// 	if (philo->status_changed)
+// 	{
+// 		usleep(philo->data->pause);
+// 		philo->status_changed = FALSE;
+// 	}
+// 	else
+// 		usleep(philo->data->min_pause);
+// }
 
-int	ft_stop_routine(t_data *data)
-{
-	int stop;
-
-	pthread_mutex_lock(&data->aux_mutex);
-	stop = data->finish_program;
-	pthread_mutex_unlock(&data->aux_mutex);
-	return (stop);
-}

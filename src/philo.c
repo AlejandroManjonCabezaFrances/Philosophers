@@ -13,6 +13,11 @@
 
 #include "../include/philosophers.h"
 
+/**
+ * This function checks the exit of the loop "routine" when a thread dies
+ * @param	t_data *data
+ * @return	int
+*/
 int	ft_stop_routine(t_data *data)
 {
 	int stop;
@@ -23,7 +28,12 @@ int	ft_stop_routine(t_data *data)
 	return (stop);
 }
 
-void	ft_parse_and_init_struct_data(char **argv, t_data *data)
+/**
+ * Parses arguments with ft_stoi_philo and initializes data struct
+ * @param	char **argv, t_data *data
+ * @return	void
+*/
+void	ft_parse_and_init_data_struct(char **argv, t_data *data)
 {
 	data->n_philos = ft_atoi_philo(argv[1]);
 	data->time_to_die = ft_atoi_philo(argv[2]);
@@ -45,7 +55,7 @@ int main(int argc, char **argv)
 		printf("Numbers of arguments invaled");
 		return (1);
 	}
-	ft_parse_and_init_struct_data(argv, &data);
+	ft_parse_and_init_data_struct(argv, &data);
 	philo = NULL;
 	philo = (t_philo *)malloc(sizeof(t_philo) * data.n_philos);
 	if (philo == NULL)

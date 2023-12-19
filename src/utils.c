@@ -6,15 +6,15 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/19 18:03:48 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/19 19:39:30 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
 /**
- * Prints the status of each thread. time, philo identifier and action
- * @param	t_philo *philo, char *action
+ * Prints the status of each thread. Time, philo identifier and action
+ * @param	t_philo *philo, char *action, uint64_t time
  * @return	void
 */
 void	ft_print_status(t_philo *philo, char *action, uint64_t time)
@@ -46,22 +46,6 @@ uint64_t	ft_get_time(void)
 }
 
 /**
- * This function creates a pause in program execution until the specified time has passed
- * usleep(100); 100 microsegundos, 10 e-6 (0,000001 segundos)
- * @param	unsigned int our_time
- * @return	int
-*/
-// int	ft_usleep(unsigned int our_time)
-// {
-// 	uint64_t	time;
-	
-// 	time = ft_get_time() + our_time;
-// 	while (ft_get_time() < time)
-// 		usleep(100);					// 100 microsegundos, 10 e-6 (0,000001 segundos)
-// 	return (0);
-// }
-
-/**
  * Prints an error passed by arguments and exits the program
  * @param	char *str
  * @return	int
@@ -74,6 +58,7 @@ int	ft_print_error(char *str)
 
 /**
  * Transform a char into an int if the number is positive and between 1 and 9
+ * and does not exceed INT_MAX
  * @param	const char *str
  * @return	int
 */
@@ -104,6 +89,11 @@ int	ft_atoi_philo(const char *str)
 	return ((int)result);
 }
 
+/**
+ * 
+ * @param	t_philo *philo
+ * @return	void
+*/
 void	ft_synchronization(t_philo *philo)
 {
 	if (philo->status_changed)

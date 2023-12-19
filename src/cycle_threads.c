@@ -6,17 +6,19 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:01:58 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/19 16:04:45 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/19 19:09:14 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
 /**
- * int pthread_create(pthread_t *thread, const pthread_attr_t *attr,void *(*start_routine) (void *), void *arg);
- * This function 
- * @param	void
- * @return	void
+ * int pthread_create(pthread_t *thread, NULL, void *(*routine) (*), void *arg);
+ * We create threads in two loops independently, the even and the odd ones,
+ * in this way we ensure that not all the philosophers
+ * pick up the forks at the same time.
+ * @param	t_philo *philo
+ * @return	int
 */
 int	ft_init_threads(t_philo *philo)
 {
@@ -47,8 +49,9 @@ int	ft_init_threads(t_philo *philo)
 }
 
 /**
- * int pthread_mutex_destroy(pthread_mutex_t *mutex);
- * @param	t_philo *philo, t_data *data
+ * We wait for the threads to reach this point
+ * and destroy all the mutexes of the left fork in a loop
+ * @param	t_data *data ,t_philo *philo
  * @return	void
 */
 void	ft_join_threads(t_data *data ,t_philo *philo)
@@ -63,6 +66,12 @@ void	ft_join_threads(t_data *data ,t_philo *philo)
 		pthread_mutex_destroy(&philo[i].l_fork);
 }
 
+/**
+ * int pthread_mutex_destroy(pthread_mutex_t *mutex);
+ * Destroy mutex og the data struct
+ * @param	t_data *data ,t_philo *philo
+ * @return	void
+*/
 void	ft_destroy_threads(t_data *data ,t_philo *philo)
 {
 	pthread_mutex_destroy(&data->print_mutex);

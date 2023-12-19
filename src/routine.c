@@ -6,12 +6,17 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:10:53 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/19 17:54:59 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/19 19:44:48 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
+/**
+ * Function that controls the death of the philosopher who did not have time to eat
+ * @param	t_philo *philo
+ * @return	void
+*/
 void	ft_death(t_philo *philo)
 {
 	u_int64_t	time;
@@ -29,6 +34,11 @@ void	ft_death(t_philo *philo)
 	pthread_mutex_unlock(&philo->data->aux_mutex);
 }
 
+/**
+ * This function controls that the philosophers pick up forks, whoever has both can eat.
+ * @param	t_philo *philo, u_int64_t time
+ * @return	void
+*/
 void	ft_take_forks_and_eat(t_philo *philo, u_int64_t time)
 {
 	pthread_mutex_lock(&philo->l_fork);
@@ -56,6 +66,11 @@ void	ft_take_forks_and_eat(t_philo *philo, u_int64_t time)
 	pthread_mutex_unlock(&philo->l_fork);
 }
 
+/**
+ * We control the 'SLEEP' state and the philosophers put down their forks
+ * @param	t_philo *philo
+ * @return	void
+*/
 void	ft_drop_forks(t_philo *philo)
 {
 	philo->status = SLEEPING;
@@ -68,6 +83,11 @@ void	ft_drop_forks(t_philo *philo)
 	pthread_mutex_unlock(philo->r_fork);
 }
 
+/**
+ * We control the 'THINK' state and the number of times each philosopher has to eat
+ * @param	t_philo *philo
+ * @return	void
+*/
 void	ft_sleep_and_think(t_philo *philo)
 {
 	philo->status = THINKING;
@@ -77,6 +97,11 @@ void	ft_sleep_and_think(t_philo *philo)
 }
 
 
+/**
+ * The philosophers manage to pick up forks to eat, sleep, think, and/or die.
+ * @param	void *philo_struct
+ * @return	void
+*/
 void	*ft_routine(void *philo_struct)
 {
 	t_philo 	*philo;

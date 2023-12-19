@@ -13,23 +13,13 @@
 
 #include "../include/philosophers.h"
 
-int	ft_stop_routine(t_data *data)
-{
-	int stop;
-
-	pthread_mutex_lock(&data->aux_mutex);
-	stop = data->finish_program;
-	pthread_mutex_unlock(&data->aux_mutex);
-	return (stop);
-}
-
-void	ft_take_forks_and_eat(t_philo *philo)
+void	ft_take_forks_and_eat(t_philo *philo, u_int64_t time)
 {
 	pthread_mutex_lock(&philo->l_fork);
 	if (philo->left_fork == TABLE)
 	{
 		philo->left_fork = LEFT_HAND;
-		ft_print_status(philo, TAKE_LEFT_FORK);
+		ft_print_status(philo, TAKE_LEFT_FORK, time);
 	}
 	if (philo->data->n_philos > 1)
 	{
@@ -37,14 +27,13 @@ void	ft_take_forks_and_eat(t_philo *philo)
 		if (*philo->right_fork == TABLE)
 		{
 			*philo->right_fork = RIGHT_HAND;
-			ft_print_status(philo, TAKE_RIGHT_FORK);
+			ft_print_status(philo, TAKE_RIGHT_FORK, time);
 		}
 		if (philo->left_fork == LEFT_HAND && *philo->right_fork == RIGHT_HAND)
 		{
 			philo->status = EATTING;
 			philo->last_meal = ft_get_time();
-			ft_print_status(philo, EAT);
-			ft_usleep(philo->data->time_to_eat);
+			ft_print_status(philo, EAT, philo->last_meal);
 		}
 		pthread_mutex_unlock(philo->r_fork);
 	}
@@ -54,7 +43,7 @@ void	ft_take_forks_and_eat(t_philo *philo)
 void	ft_drop_forks(t_philo *philo)
 {
 	philo->status = SLEEPING;
-	ft_print_status(philo, SLEEP);
+	ft_print_status(philo, SLEEP, (philo->last_meal + philo->data->time_to_eat));
 	pthread_mutex_lock(&philo->l_fork);
 	philo->left_fork = TABLE;
 	pthread_mutex_unlock(&philo->l_fork);
@@ -66,7 +55,7 @@ void	ft_drop_forks(t_philo *philo)
 void	ft_sleep_and_think(t_philo *philo)
 {
 	philo->status = THINKING;
-	ft_print_status(philo, THINK);
+	ft_print_status(philo, THINK, philo->last_meal + philo->data->time_to_eat + philo->data->time_to_sleep);
 	if (philo->count_meals > 0)
 		philo->count_meals--;
 }
@@ -79,7 +68,6 @@ void	ft_death(t_philo *philo)
 	if (philo->data->finish_program == 0)
 	{
 		philo->data->finish_program = 1;
-		usleep(50);
 		pthread_mutex_lock(&philo->data->print_mutex);
 		time = philo->last_meal + philo->data->time_to_die;
 		printf("time:%llums | philo:%d | action: %s\n", time - philo->data->start_time, philo->id, DIE);
@@ -101,12 +89,13 @@ void	*ft_routine(void *philo_struct)
 		if (time > philo->last_meal + philo->data->time_to_die)
 			ft_death(philo);
 		else if (philo->status == THINKING)
-			ft_take_forks_and_eat(philo);
-		else if(philo->status == EATTING)
+			ft_take_forks_and_eat(philo, time);
+		else if(philo->status == EATTING && time > philo->last_meal + philo->data->time_to_eat)
 			ft_drop_forks(philo);
 		else if (philo->status == SLEEPING 
 			&& time > philo->last_meal + philo->data->time_to_eat + philo->data->time_to_sleep)
 		ft_sleep_and_think(philo);
+		ft_synchronization(philo);
 	}
 	return (0);
 }
@@ -220,11 +209,10 @@ void	ft_destroy_threads(t_data *data ,t_philo *philo)
 	free (philo);
 }
 
-void	ft_init_mutex_philos_forks_threads(int argc, t_philo *philo, t_data *data)
+void	ft_init_philos(int argc, t_data *data, t_philo *philo)
 {
 	int i;
 
-	ft_init_mutex(data, philo);
 	i = 0;
 	while (i < data->n_philos)
 	{
@@ -232,36 +220,36 @@ void	ft_init_mutex_philos_forks_threads(int argc, t_philo *philo, t_data *data)
 		philo[i].last_meal = 0;
 		philo[i].data = data;
 		philo[i].left_fork = 0;
-		philo[i].right_fork = NULL;
 		philo[i].r_fork = NULL;
+		philo[i].right_fork = NULL;
 		philo[i].status = THINKING;
+		philo[i].status_changed = FALSE;
 		if (argc == 6)
 			philo[i].count_meals = data->n_times_to_eat;
 		else
 			philo[i].count_meals = -1;
 		i++;
 	}
+}
+
+void	ft_init_table(int argc, t_philo *philo, t_data *data)
+{
+	ft_init_mutex(data, philo);
+	ft_init_philos(argc, data, philo);
 	ft_init_forks_right(data->n_philos, philo);
 	ft_init_threads(philo);
 	ft_join_threads(data, philo);
 	ft_destroy_threads(data, philo);
 }
 
-void	ft_parse_and_init_struct_data(/* int argc,  */char **argv, t_data *data)
+void	ft_parse_and_init_struct_data(char **argv, t_data *data)
 {
 		data->n_philos = ft_atoi_philo(argv[1]);
-		printf("data->n_philos = %d\n", data->n_philos);
 		data->time_to_die = ft_atoi_philo(argv[2]);
-		printf("data->time_to_die = %d\n", data->time_to_die);
 		data->time_to_eat = ft_atoi_philo(argv[3]);
-		printf("data->time_to_eat = %d\n", data->time_to_eat);
 		data->time_to_sleep = ft_atoi_philo(argv[4]);
-		printf("data->time_to_sleep = %d\n", data->time_to_sleep);
 		if (argv[5])
-		{
 			data->n_times_to_eat = ft_atoi_philo(argv[5]);
-			printf("data->n_times_to_eat = %d\n", data->n_times_to_eat);
-		}
 	data->finish_program = 0;
 	data->start_time = ft_get_time();
 }
@@ -272,18 +260,24 @@ int main(int argc, char **argv)
 	t_philo	*philo;
 
 	if (argc < 5 || argc > 6)
-		ft_print_error("Numbers of arguments invaled");
-	ft_parse_and_init_struct_data(/* argc,  */argv, &data);
+	{
+		printf("Numbers of arguments invaled");
+		return (1);
+	}
+	ft_parse_and_init_struct_data(argv, &data);
 	philo = NULL;
 	philo = (t_philo *)malloc(sizeof(t_philo) * data.n_philos);
 	if (philo == NULL)
 	{
-		ft_print_error("error malloc");
+		printf("error malloc");
 		return (1);
 	}
 	if (data.n_philos >= 1 && data.n_philos <= 200)
-		ft_init_mutex_philos_forks_threads(argc, philo, &data);
-	else	
+		ft_init_table(argc, philo, &data);
+	else
+	{	
 		printf("Number of philosopher's is too many or 0");
+		return (1);
+	}
 	return (0);
 }

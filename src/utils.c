@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/18 15:37:50 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/19 12:03:53 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,17 @@
  * @param	t_philo *philo, char *action
  * @return	void
 */
-void	ft_print_status(t_philo *philo, char *action)
+void	ft_print_status(t_philo *philo, char *action, uint64_t time)
 {
-	uint64_t	time;
-
-	time = (ft_get_time() - philo->data->start_time);
-	
+	// time = (ft_get_time() - philo->data->start_time);
+	pthread_mutex_lock(&philo->data->aux_mutex);
 	if (philo->data->finish_program == 0)
 	{
-	pthread_mutex_lock(&philo->data->print_mutex);
-	printf("time:%llums | philo:%d | action: %s\n", time, philo->id, action);
-	pthread_mutex_unlock(&philo->data->print_mutex);
+		pthread_mutex_lock(&philo->data->print_mutex);
+		printf("time:%llums | philo:%d | action: %s\n", time - philo->data->start_time, philo->id, action);
+		pthread_mutex_unlock(&philo->data->print_mutex);
 	}
+	pthread_mutex_unlock(&philo->data->aux_mutex);
 }
 
 /**
@@ -104,4 +103,25 @@ int	ft_atoi_philo(const char *str)
 	if (result > INT_MAX)
 		ft_print_error("Invalid arguments: overflow INT");
 	return ((int)result);
+}
+
+void	ft_synchronization(t_philo *philo)
+{
+	if (philo->status_changed)
+	{
+		usleep(philo->data->pause);
+		philo->status_changed = FALSE;
+	}
+	else
+		usleep(philo->data->min_pause);
+}
+
+int	ft_stop_routine(t_data *data)
+{
+	int stop;
+
+	pthread_mutex_lock(&data->aux_mutex);
+	stop = data->finish_program;
+	pthread_mutex_unlock(&data->aux_mutex);
+	return (stop);
 }

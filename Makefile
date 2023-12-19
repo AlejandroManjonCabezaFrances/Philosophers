@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/17 09:03:02 by amanjon-          #+#    #+#              #
-#    Updated: 2023/12/14 10:29:46 by marvin           ###   ########.fr        #
+#    Updated: 2023/12/19 12:20:39 by amanjon-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CFLAGS = -Wall -Wextra -Werror  -I /libft/ft_printf/include -I /libft/gnl/includ
 #DEBUG = -g3 -fsanitize=address
 DEBUG = -g3 -fsanitize=thread
 RM = rm -f
-SRC = main.c utils.c
+SRC = philo.c utils.c
 #SRC = sandbox.c 
 
 #LIBFT_DIR = libft/

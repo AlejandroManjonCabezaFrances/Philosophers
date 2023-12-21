@@ -1,8 +1,0 @@
-{
-	"files.associations": {
-		"fcntl.h": "c",
-		"stat.h": "c",
-		"philosophers.h": "c"
-	},
-	"C_Cpp.errorSquiggles": "disabled"
-}

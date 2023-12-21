@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 06:50:27 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/21 08:39:36 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/21 12:10:28 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@
 // 	pthread_join(thread1, NULL);
 // 	pthread_join(thread2, NULL);
 
-// 	printf("count value %d\n", count); // en el viceo solo muestra este printf,
+// 	printf("count value %d\n", count); // en el video solo muestra este printf,
 // los demás son por check
 
 // 	return (0);
@@ -151,7 +151,7 @@
 
 //  	gettimeofday(&tv, NULL);
 // 	return (unsigned long long)(tv.tv_sec) * 1000
-//		+ (unsigned long long)(tv.tv_usec) / 1000;
+// 		+ (unsigned long long)(tv.tv_usec) / 1000;
 // }
 
 // int main(int argc, char **argv)
@@ -176,57 +176,18 @@
 //     return (0);
 // }
 
-/* ############################  4  ############################ */
-/* ######################## EXAMPLE MUTEX ######################## */
+// /**
+//  * Creates a pause in program execution until the specified time has passed
+//  * usleep(100); 100 microsegundos, 10 e-6 (0,000001 segundos)
+//  * @param	unsigned int our_time
+//  * @return	int
+// */
+// int	ft_usleep(unsigned int our_time)
+// {
+// 	uint64_t	time;
 
-void	take_forks(t_philo *philo)
-{
-	pthread_mutex_lock(philo->right_fork);
-	print_action(philo, TAKE_FORK);
-	pthread_mutex_lock(philo->left_fork);
-	print_action(philo, TAKE_FORK);
-}
-
-void	drop_forks(t_philo *philo)
-{
-	pthread_mutex_unlock(philo->right_fork);
-	pthread_mutex_unlock(philo->left_fork);
-	print_action(philo, SLEEPING);
-	philo_usleep(philo->data->time_to_sleep);
-}
-
-// We need to lock and unlock the print mutex 
-// to avoid data races when printing
-void	philo_eat(t_philo *philo)
-{
-	while (philo->data->finish_program == 0)
-	{
-		pthread_mutex_unlock(philo->print);
-		take_forks(philo);
-		pthread_mutex_lock(philo->lock);
-		philo->last_meal = set_time() - philo->data->start_time;
-		if (philo->data->number_of_meals != -1)
-			philo->meal_counter++;
-		print_action(philo, EATING);
-		pthread_mutex_unlock(philo->lock);
-		philo_usleep(philo->data->time_to_eat);
-		drop_forks(philo);
-		print_action(philo, THINKING);
-		pthread_mutex_lock(philo->print);
-	}
-}
-
-// Routine for the philos
-// They lock and unlock the print mutex to avoid printing at the same time
-void	*routine(void *philo_no_casted)
-{
-	t_philo	*philo;
-
-	philo = philo_no_casted;
-	if (philo->id % 2 == 0)
-		philo_usleep(200);
-	pthread_mutex_lock(data->print_mutex);
-	philo_eat(philo);
-	pthread_mutex_unlock(data->print_mutex);
-	return (NULL);
-}
+// 	time = ft_get_time() + our_time;
+// 	while (ft_get_time() < time)
+// 		usleep(100);			// 100 microsegundos, 10 e-6 (0,000001 segundos)
+// 	return (0);
+// }

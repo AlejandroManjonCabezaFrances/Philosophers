@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:10:53 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/21 11:17:53 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/21 12:09:01 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ void	ft_drop_forks(t_philo *philo)
 void	ft_sleep_and_think(t_philo *philo)
 {
 	philo->status = THINKING;
-	// usleep(20);
 	ft_print_status(philo, THINK, philo->last_meal + philo->data->time_to_eat
 		+ philo->data->time_to_sleep);
 	if (philo->count_meals > 0)
@@ -128,6 +127,7 @@ void	*ft_routine(void *philo_struct)
 		else if (philo->status == SLEEPING && time > philo->last_meal
 			+ philo->data->time_to_eat + philo->data->time_to_sleep)
 			ft_sleep_and_think(philo);
+		usleep(100);
 	}
 	return (0);
 }

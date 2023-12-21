@@ -13,19 +13,24 @@ solo habrá un tenedor en la mesa.
 • Para prevenir que los filósofos dupliquen los tenedores, deberás proteger los estados
 de los tenedores con un mutex por cada uno de ellos.
 
-• Tu programa debe aceptar los siguientes argumentos:
-number_of_philosophers time_to_die time_to_eat time_to_sleep
-[number_of_times_each_philosopher_must_eat]
-◦ number_of_philosophers: es el número de filósofos, pero también el número
+---
+<div align="left">
+  <h3>Tu programa debe aceptar los siguientes argumentos:</h3>
+  <div>
+
+• number_of_philosophers: es el número de filósofos, pero también el número
 de tenedores.
-◦ time_to_die (en milisegundos): si un filósofo no empieza a comer en time_to_die
+
+• time_to_die (en milisegundos): si un filósofo no empieza a comer en time_to_die
 milisegundos desde el comienzo de su ultima comida o desde el principio de la
 simulación, este morirá.
-◦ time_to_eat (en milisegundos): es el tiempo que tiene un filósofo para comer.
+
+• time_to_eat (en milisegundos): es el tiempo que tiene un filósofo para comer.
 Durante ese tiempo, tendrá los tenedores ocupados.
-◦ time_to_sleep (en milisegundos): es el tiempo que tiene un filósofo para
+• time_to_sleep (en milisegundos): es el tiempo que tiene un filósofo para
 dormir.
-◦ number_of_times_each_philosopher_must_eat (argumento opcional): si todos los filósofos comen al menos number_of_times_each_philosopher_must_eat
+
+• number_of_times_each_philosopher_must_eat (argumento opcional): si todos los filósofos comen al menos number_of_times_each_philosopher_must_eat
 veces, la simulación se detendrá. Si no se especifica, la simulación se detendrá
 con la muerte de un filósofo.
 

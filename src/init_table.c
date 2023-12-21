@@ -6,14 +6,14 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:01:44 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/19 18:49:09 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/21 09:55:52 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
 /**
- * int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr);
+ * int pthread_mutex_init(pthread_mutex_t *mutex, c. pthread_mutexattr_t *attr);
  * We initialize the corresponding mutexes,
  * one of these mutexes as many times as there are n_philos
  * @param	t_data *data, t_philo *philo
@@ -21,9 +21,9 @@
 */
 int	ft_init_mutex(t_data *data, t_philo *philo)
 {
-	int i;
+	int	i;
 
-	i = 0;
+	i = -1;
 	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
 	{
 		printf("error init mutex: print_mutex");
@@ -34,14 +34,13 @@ int	ft_init_mutex(t_data *data, t_philo *philo)
 		printf("error init mutex: kill_mutex");
 		return (1);
 	}
-	while (i < data->n_philos)
+	while (++i < data->n_philos)
 	{
 		if (pthread_mutex_init(&philo[i].l_fork, NULL) != 0)
 		{
 			printf("error init mutex: l_fork");
 			return (1);
 		}
-		i++;
 	}
 	return (0);
 }
@@ -54,10 +53,10 @@ int	ft_init_mutex(t_data *data, t_philo *philo)
 */
 void	ft_init_philos(int argc, t_data *data, t_philo *philo)
 {
-	int i;
+	int	i;
 
-	i = 0;
-	while (i < data->n_philos)
+	i = -1;
+	while (++i < data->n_philos)
 	{
 		philo[i].id = i + 1;
 		philo[i].last_meal = 0;
@@ -71,7 +70,6 @@ void	ft_init_philos(int argc, t_data *data, t_philo *philo)
 			philo[i].count_meals = data->n_times_to_eat;
 		else
 			philo[i].count_meals = -1;
-		i++;
 	}
 }
 
@@ -84,11 +82,11 @@ void	ft_init_philos(int argc, t_data *data, t_philo *philo)
 */
 void	ft_init_forks_right(t_data *data, t_philo *philo)
 {
-	int pos_philo;
-	int i;
+	int	pos_philo;
+	int	i;
 
-	i = 0;
-	while (i < data->n_philos)
+	i = -1;
+	while (++i < data->n_philos)
 	{
 		if (i == data->n_philos - 1)
 			pos_philo = 0;
@@ -96,7 +94,6 @@ void	ft_init_forks_right(t_data *data, t_philo *philo)
 			pos_philo = i + 1;
 		philo[i].right_fork = &philo[pos_philo].left_fork;
 		philo[i].r_fork = &philo[pos_philo].l_fork;
-		i++;
 	}
 }
 

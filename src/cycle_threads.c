@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:01:58 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/19 19:09:14 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/21 10:12:15 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 */
 int	ft_init_threads(t_philo *philo)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < philo->data->n_philos)
@@ -54,9 +54,9 @@ int	ft_init_threads(t_philo *philo)
  * @param	t_data *data ,t_philo *philo
  * @return	void
 */
-void	ft_join_threads(t_data *data ,t_philo *philo)
+void	ft_join_threads(t_data *data, t_philo *philo)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < data->n_philos)
@@ -72,7 +72,7 @@ void	ft_join_threads(t_data *data ,t_philo *philo)
  * @param	t_data *data ,t_philo *philo
  * @return	void
 */
-void	ft_destroy_threads(t_data *data ,t_philo *philo)
+void	ft_destroy_threads(t_data *data, t_philo *philo)
 {
 	pthread_mutex_destroy(&data->print_mutex);
 	pthread_mutex_destroy(&data->aux_mutex);

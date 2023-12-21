@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sandbox.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 06:50:27 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/21 13:50:27 by marvin           ###   ########.fr       */
+/*   Updated: 2023/12/21 08:39:36 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@
 // 	return (NULL);
 // }
 
-// // pthread_create(identificador, atributos "por defecto", rutina del hilo,
-// // argumento de entrada "numero de lineas pasado por argumentos") --> value = argv[1] --> n_lines
+// pthread_create(identificador, atributos "por defecto", rutina del hilo,
+// argumento de entrada "numero de lineas pasado por argumentos") --> 
+// value = argv[1] --> n_lines
 
-// // pthread_join(identificador, NULL "valor de retorno"); --> esta función evita que el programa acabe
+// // pthread_join(identificador, NULL "valor de retorno"); -->
+// esta función evita que el programa acabe
 // // sin que acabe el hilo de ejecutarse
 // int main(int argc, char **argv)
 // {
@@ -55,12 +57,11 @@
 // 		printf("pthread not created!!\n");
 // 		return (-1);
 // 	}
-	
+
 // 	pthread_join(thread1, NULL);
-	
+
 // 	return (0);
 // }
-
 
 /* ##############################  2  ############################## */
 /* ############################  MUTEX  ############################ */
@@ -112,7 +113,7 @@
 // 	pthread_mutex_t my_mutex;
 // 	pthread_t		thread1;
 // 	pthread_t		thread2;
-	
+
 // 	if (pthread_create(&thread1, NULL, ft_thread1_routine, NULL) != 0)
 // 	{
 // 		ft_error_exit("thread1 cannnot be created!!\n");
@@ -121,47 +122,45 @@
 // 	{
 // 		ft_error_exit("thread1 cannnot be created!!\n");
 // 	}
-	
+
 // 	pthread_join(thread1, NULL);
 // 	pthread_join(thread2, NULL);
 
-// 	printf("count value %d\n", count); // en el viceo solo muestra este printf, los demás son por check
-	
+// 	printf("count value %d\n", count); // en el viceo solo muestra este printf,
+// los demás son por check
+
 // 	return (0);
 // }
 
 /* ##############################  3  ############################## */
 /* ######################## GET TIME IN MS ######################## */
- /*hora expresada en milisegundos transcurridos desde el 1 de enero de 1970, conocido como el "epoch" en sistemas Unix.*/
+//  hora expresada en milisegundos transcurridos desde el 1 de enero de 1970,
+//  conocido como el "epoch" en sistemas Unix.
 
-/**
- * función con tipo dato utilizado generalmente para el tiempo
-*/
-/*uint64_t	ft_get_time(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
-}*/
-
-// unsigned long long ft_get_time(void) 
+// uint64_t	ft_get_time(void)
 // {
-//     struct timeval	tv;
-//     gettimeofday(&tv, NULL);
-//     return (unsigned long long)(tv.tv_sec) * 1000 + (unsigned long long)(tv.tv_usec) / 1000;
+// 	struct timeval	tv;
+
+// 	gettimeofday(&tv, NULL);
+// 	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
 // }
 
-// int main(int argc, char **argv) 
+// unsigned long long ft_get_time(void)
+// {
+//     struct timeval	tv;
+
+//  	gettimeofday(&tv, NULL);
+// 	return (unsigned long long)(tv.tv_sec) * 1000
+//		+ (unsigned long long)(tv.tv_usec) / 1000;
+// }
+
+// int main(int argc, char **argv)
 // {
 //     unsigned long long current_time = ft_get_time();
 //     printf("Current time in milliseconds: %llu\n", current_time);
 //     return (0);
 // }
 
-/**
- * int main para cambiar los ms. de gettimeofday(&tv, NULL) a fecha y hora actual: NO PERMITIDO
-*/
 // int main(int argc, char **argv) 
 // {
 //     unsigned long long current_time;// Reemplaza con el valor obtenido
@@ -177,8 +176,6 @@
 //     return (0);
 // }
 
-
-
 /* ############################  4  ############################ */
 /* ######################## EXAMPLE MUTEX ######################## */
 
@@ -191,7 +188,7 @@ void	take_forks(t_philo *philo)
 }
 
 void	drop_forks(t_philo *philo)
-{	
+{
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 	print_action(philo, SLEEPING);

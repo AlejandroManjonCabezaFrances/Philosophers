@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/19 19:39:30 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/21 08:53:49 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,19 @@ void	ft_print_status(t_philo *philo, char *action, uint64_t time)
 	if (philo->data->finish_program == 0)
 	{
 		pthread_mutex_lock(&philo->data->print_mutex);
-		printf("time:%llums | philo:%d | action: %s\n", time - philo->data->start_time, philo->id, action);
+		printf("time:%llums | philo:%d | action: %s\n",
+			time - philo->data->start_time, philo->id, action);
 		pthread_mutex_unlock(&philo->data->print_mutex);
 	}
 	pthread_mutex_unlock(&philo->data->aux_mutex);
 }
 
 /**
- * Time expressed in milliseconds since January 1, 1970, known as the "epoch"
- * (tv.tv_sec) * 1000 -> seconds*1000 y (tv.tv_usec) / 1000 -> microseconds/1000 to go to ms
+ * This function returns the current time in milliseconds
+ * (tv.tv_sec) * 1000 -> seconds to milliseconds
+ * (tv.tv_usec) / 1000 -> microseconds to milliseconds
  * @param	void
- * @return	unsigned long long
+ * @return	uint64_t
 */
 uint64_t	ft_get_time(void)
 {
@@ -52,7 +54,7 @@ uint64_t	ft_get_time(void)
 */
 int	ft_print_error(char *str)
 {
-	printf("%s\n" ,str);
+	printf("%s\n", str);
 	exit(EXIT_FAILURE);
 }
 
@@ -74,7 +76,7 @@ int	ft_atoi_philo(const char *str)
 	if (str[i] == '+')
 		i++;
 	if (str[i] == '-')
-		ft_print_error("Invalid arguments: numbers negatives");
+		ft_print_error("Invalid arguments: just numbers positives");
 	if (str[i] < '1' || str[i] > '9')
 		ft_print_error("Invalid arguments: just numbers from 1 to 9");
 	while (str[i] >= '0' && str[i] <= '9' && str[i] != '\0')
@@ -104,4 +106,3 @@ void	ft_synchronization(t_philo *philo)
 	else
 		usleep(philo->data->min_pause);
 }
-

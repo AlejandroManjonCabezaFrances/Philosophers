@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 08:45:12 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/05/12 07:32:51 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/21 07:43:37 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	k = ft_strlen(src);
 	i = 0;
 	while (dst[i] && i < dstsize)
-	i++;
+		i++;
 	j = 0;
 	while (src[j] && ((i + j + 1) < dstsize))
 	{

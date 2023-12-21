@@ -6,14 +6,15 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 16:10:53 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/19 19:44:48 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/21 11:17:53 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
 /**
- * Function that controls the death of the philosopher who did not have time to eat
+ * Function that controls the death of the philosopher
+ * who did not have time to eat
  * @param	t_philo *philo
  * @return	void
 */
@@ -24,18 +25,20 @@ void	ft_death(t_philo *philo)
 	pthread_mutex_lock(&philo->data->aux_mutex);
 	if (philo->data->finish_program == 0)
 	{
+		philo->status = DYING;
 		philo->data->finish_program = 1;
-		usleep(philo->data->pause);
 		pthread_mutex_lock(&philo->data->print_mutex);
 		time = philo->last_meal + philo->data->time_to_die;
-		printf("time:%llums | philo:%d | action: %s\n", time - philo->data->start_time, philo->id, DIE);
+		printf("time:%llums | philo:%d | action: %s\n",
+			time - philo->data->start_time, philo->id, DIE);
 		pthread_mutex_unlock(&philo->data->print_mutex);
 	}
 	pthread_mutex_unlock(&philo->data->aux_mutex);
 }
 
 /**
- * This function controls that the philosophers pick up forks, whoever has both can eat.
+ * This function controls that the philosophers pick up forks,
+ * whoever has both can eat.
  * @param	t_philo *philo, u_int64_t time
  * @return	void
 */
@@ -74,28 +77,31 @@ void	ft_take_forks_and_eat(t_philo *philo, u_int64_t time)
 void	ft_drop_forks(t_philo *philo)
 {
 	philo->status = SLEEPING;
-	ft_print_status(philo, SLEEP, (philo->last_meal + philo->data->time_to_eat));
-	pthread_mutex_lock(&philo->l_fork);
-	philo->left_fork = TABLE;
-	pthread_mutex_unlock(&philo->l_fork);
+	ft_print_status(philo, SLEEP, (philo->last_meal
+			+ philo->data->time_to_eat));
 	pthread_mutex_lock(philo->r_fork);
 	*philo->right_fork = TABLE;
 	pthread_mutex_unlock(philo->r_fork);
+	pthread_mutex_lock(&philo->l_fork);
+	philo->left_fork = TABLE;
+	pthread_mutex_unlock(&philo->l_fork);
 }
 
 /**
- * We control the 'THINK' state and the number of times each philosopher has to eat
+ * We control the 'THINK' state and the number of times each
+ * philosopher has to eat
  * @param	t_philo *philo
  * @return	void
 */
 void	ft_sleep_and_think(t_philo *philo)
 {
 	philo->status = THINKING;
-	ft_print_status(philo, THINK, philo->last_meal + philo->data->time_to_eat + philo->data->time_to_sleep);
+	// usleep(20);
+	ft_print_status(philo, THINK, philo->last_meal + philo->data->time_to_eat
+		+ philo->data->time_to_sleep);
 	if (philo->count_meals > 0)
 		philo->count_meals--;
 }
-
 
 /**
  * The philosophers manage to pick up forks to eat, sleep, think, and/or die.
@@ -104,7 +110,7 @@ void	ft_sleep_and_think(t_philo *philo)
 */
 void	*ft_routine(void *philo_struct)
 {
-	t_philo 	*philo;
+	t_philo		*philo;
 	uint64_t	time;
 
 	philo = (t_philo *)philo_struct;
@@ -116,12 +122,12 @@ void	*ft_routine(void *philo_struct)
 			ft_death(philo);
 		else if (philo->status == THINKING)
 			ft_take_forks_and_eat(philo, time);
-		else if(philo->status == EATTING && time > philo->last_meal + philo->data->time_to_eat)
+		else if (philo->status == EATTING && time > philo->last_meal
+			+ philo->data->time_to_eat)
 			ft_drop_forks(philo);
-		else if (philo->status == SLEEPING 
-			&& time > philo->last_meal + philo->data->time_to_eat + philo->data->time_to_sleep)
+		else if (philo->status == SLEEPING && time > philo->last_meal
+			+ philo->data->time_to_eat + philo->data->time_to_sleep)
 			ft_sleep_and_think(philo);
-		ft_synchronization(philo);
 	}
 	return (0);
 }

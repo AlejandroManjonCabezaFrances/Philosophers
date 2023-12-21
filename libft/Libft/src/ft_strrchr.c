@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 12:16:17 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/05/12 07:33:16 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/21 07:44:30 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_strrchr(const char *s, int c)
 	{
 		if (a[i] == (char)c)
 			return (&a[i]);
-	i--;
+		i--;
 	}
 	return (NULL);
 }

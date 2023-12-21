@@ -1,13 +1,12 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 15:06:23 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/11/14 18:55:55 by amanjon-         ###   ########.fr       */
+/*   Updated: 2023/12/21 08:11:42 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +19,7 @@
 */
 int	ft_stop_routine(t_data *data)
 {
-	int stop;
+	int	stop;
 
 	pthread_mutex_lock(&data->aux_mutex);
 	stop = data->finish_program;
@@ -45,7 +44,13 @@ void	ft_parse_and_init_data_struct(char **argv, t_data *data)
 	data->start_time = ft_get_time();
 }
 
-int main(int argc, char **argv)
+/**
+ * Parse, reserve dynamic memory for the philosophers array
+ * and initialize the program
+ * @param	int argc, char **argv
+ * @return	int
+*/
+int	main(int argc, char **argv)
 {
 	t_data	data;
 	t_philo	*philo;
@@ -66,7 +71,7 @@ int main(int argc, char **argv)
 	if (data.n_philos >= 1 && data.n_philos <= 200)
 		ft_init_table(argc, philo, &data);
 	else
-	{	
+	{
 		printf("Number of philosopher's is too many or 0");
 		return (1);
 	}

@@ -2,4 +2,3 @@
 *.a
 .vscode/
 .DS_Store
-philo

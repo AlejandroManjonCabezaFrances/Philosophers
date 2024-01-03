@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 09:29:49 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/21 10:55:43 by amanjon-         ###   ########.fr       */
+/*   Updated: 2024/01/03 08:10:16 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ int			ft_init_mutex(t_data *data, t_philo *philo);
 void		ft_death(t_philo *philo);
 void		ft_drop_forks(t_philo *philo);
 void		*ft_routine(void *philo_struct);
-void		ft_synchronization(t_philo *philo);
 void		ft_sleep_and_think(t_philo *philo);
 void		ft_join_threads(t_data *data, t_philo *philo);
 void		ft_destroy_threads(t_data *data, t_philo *philo);

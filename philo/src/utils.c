@@ -6,7 +6,7 @@
 /*   By: amanjon- <amanjon-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 08:23:55 by amanjon-          #+#    #+#             */
-/*   Updated: 2023/12/21 08:53:49 by amanjon-         ###   ########.fr       */
+/*   Updated: 2024/01/03 08:10:04 by amanjon-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,20 +89,4 @@ int	ft_atoi_philo(const char *str)
 	if (result > INT_MAX)
 		ft_print_error("Invalid arguments: overflow INT");
 	return ((int)result);
-}
-
-/**
- * 
- * @param	t_philo *philo
- * @return	void
-*/
-void	ft_synchronization(t_philo *philo)
-{
-	if (philo->status_changed)
-	{
-		usleep(philo->data->pause);
-		philo->status_changed = FALSE;
-	}
-	else
-		usleep(philo->data->min_pause);
 }
